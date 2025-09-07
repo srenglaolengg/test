@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Safe Stress Tool</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>🔐 Safe Stress Test Tool</h1>
+  <form id="attackForm">
+    <label>Target URL:</label>
+    <input type="text" id="target" placeholder="http://127.0.0.1" required><br>
+    <label>Port:</label>
+    <input type="number" id="port" value="80"><br>
+    <label>Threads:</label>
+    <input type="number" id="threads" value="10"><br>
+    <label>Requests/Thread:</label>
+    <input type="number" id="requests" value="100"><br>
+    <button type="submit">Start Test</button>
+  </form>
+  <pre id="result"></pre>
+
+  <script>
+    document.getElementById('attackForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const data = {
+        target: document.getElementById('target').value,
+        port: document.getElementById('port').value,
+        threads: document.getElementById('threads').value,
+        requests_per_thread: document.getElementById('requests').value
+      };
+
+      const res = await fetch('/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      document.getElementById('result').textContent = JSON.stringify(json, null, 2);
+    };
+  </script>
+</body>
+</html>
