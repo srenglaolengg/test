@@ -1,42 +1,235 @@
 <!DOCTYPE html>
-<html>
+<html lang="km">
 <head>
-  <title>Safe Stress Tool</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CubeSabay - Minecraft Survival SMP សម្រាប់ชาวខ្មែរ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* រចនាប័ទ្មបន្ថែមសម្រាប់ Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+    .section-hidden {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    .faq-btn .icon.rotate-180 {
+        transform: rotate(180deg);
+    }
+  </style>
 </head>
-<body>
-  <h1>🔐 Safe Stress Test Tool</h1>
-  <form id="attackForm">
-    <label>Target URL:</label>
-    <input type="text" id="target" placeholder="http://127.0.0.1" required><br>
-    <label>Port:</label>
-    <input type="number" id="port" value="80"><br>
-    <label>Threads:</label>
-    <input type="number" id="threads" value="10"><br>
-    <label>Requests/Thread:</label>
-    <input type="number" id="requests" value="100"><br>
-    <button type="submit">Start Test</button>
-  </form>
-  <pre id="result"></pre>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- បឋមកថា (Header) -->
+  <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#" class="text-2xl font-bold text-indigo-600">
+        <i class="fas fa-cube mr-2"></i>CubeSabay
+      </a>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="#features" class="text-gray-600 hover:text-indigo-600 transition">លក្ខណៈពិសេស</a>
+        <a href="#rules" class="text-gray-600 hover:text-indigo-600 transition">ច្បាប់</a>
+        <a href="#gallery" class="text-gray-600 hover:text-indigo-600 transition">Gallery</a>
+        <a href="index.html" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition shadow">
+          <i class="fas fa-shopping-cart mr-2"></i>Webstore
+        </a>
+      </div>
+      <button class="md:hidden text-2xl" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+        <a href="#features" class="block py-2 text-gray-600 hover:text-indigo-600">លក្ខណៈពិសេស</a>
+        <a href="#rules" class="block py-2 text-gray-600 hover:text-indigo-600">ច្បាប់</a>
+        <a href="#gallery" class="block py-2 text-gray-600 hover:text-indigo-600">Gallery</a>
+        <a href="index.html" target="_blank" class="block mt-2 bg-green-500 text-white text-center px-4 py-2 rounded-lg font-semibold">Webstore</a>
+    </div>
+  </header>
+
+  <!-- ផ្នែក Hero -->
+  <section class="bg-cover bg-center py-28 px-6 text-center text-white" style="background-image: url('https://avatars.githubusercontent.com/u/169924051?s=400&v=4');">
+    <div class="bg-black/50 rounded-2xl p-8 max-w-4xl mx-auto">
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">សូមស្វាគមន៍មកកាន់ <span class="text-yellow-300">CubeSabay</span> 🇰🇭</h1>
+        <p class="text-xl mb-8">ពិភព Minecraft Survival SMP ដ៏រស់រវើកសម្រាប់សហគមន៍ខ្មែរ</p>
+        <div class="flex justify-center gap-4 flex-wrap">
+          <a href="#join" class="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition">
+            <i class="fas fa-play mr-2"></i>ចូលរួមឥឡូវនេះ
+          </a>
+          <a href="https://discord.gg/yourdiscordlink" target="_blank" class="bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-indigo-400 transform hover:scale-105 transition">
+            <i class="fab fa-discord mr-2"></i>ចូល Discord
+          </a>
+        </div>
+    </div>
+  </section>
+
+  <!-- ផ្នែកលក្ខណៈពិសេស (Original) -->
+  <section id="features" class="py-20 px-6 max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-800">✨ អ្វីដែលធ្វើឲ្យ CubeSabay ពិសេស?</h2>
+        <p class="text-lg text-gray-500 mt-2">ស្វែងយល់ពីលក្ខណៈពិសេសដែលធ្វើឱ្យ Server របស់យើងអស្ចារ្យ</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-indigo-500 mb-4"><i class="fas fa-gamepad"></i></div><h3 class="text-2xl font-bold mb-3">🌍 Cross-Play</h3><p class="text-gray-600">លេងបានទាំង Java Edition និង Bedrock Edition (PC, ទូរស័ព្ទ, Console) នៅក្នុង Server តែមួយ។</p></div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-yellow-500 mb-4"><i class="fas fa-star"></i></div><h3 class="text-2xl font-bold mb-3">⭐ ប្រព័ន្ធ Rank</h3><p class="text-gray-600">ឡើង Rank ពី Member ទៅ VIP, Legend, និង GOD! ជាមួយនឹង Kit និងសិទ្ធិពិសេសៗ។</p></div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-green-500 mb-4"><i class="fas fa-dollar-sign"></i></div><h3 class="text-2xl font-bold mb-3">💰 សេដ្ឋកិច្ច & ការងារ</h3><p class="text-gray-600">ជ្រើសរើសការងារដូចជា ជីករ៉ែ ឬ កាប់ឈើ ដើម្បីរកលុយ និងបង្កើតហាងផ្ទាល់ខ្លួន។</p></div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-red-500 mb-4"><i class="fas fa-shield-alt"></i></div><h3 class="text-2xl font-bold mb-3">🛡️ ការពារដី</h3><p class="text-gray-600">Claim ដី និងការពារផ្ទះរបស់អ្នកពីការបំផ្លាញដោយអ្នកលេងផ្សេង។</p></div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-blue-500 mb-4"><i class="fas fa-box-open"></i></div><h3 class="text-2xl font-bold mb-3">🎁 Kit ពិសេស</h3><p class="text-gray-600">ទទួលបាន Kit ប្រចាំថ្ងៃ និងសប្តាហ៍អាស្រ័យលើ Rank ដើម្បីជួយសម្រួលដល់ការលេង។</p></div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-purple-500 mb-4"><i class="fas fa-sign-in-alt"></i></div><h3 class="text-2xl font-bold mb-3">✅ Auto Login</h3><p class="text-gray-600">សម្រាប់អ្នកលេង Premium (Java) អាចចូលបានភ្លាមៗដោយមិនចាំបាច់ Login។</p></div>
+    </div>
+  </section>
+
+  <!-- ផ្នែករបៀបចូលរួម (Original) -->
+  <section id="join" class="bg-gray-200 py-20 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">🚀 របៀបចូលរួមលេង</h2>
+      <p class="text-lg text-gray-600 mb-8">ត្រៀមខ្លួនសម្រាប់ការផ្សងព្រេងថ្មីហើយឬនៅ? ធ្វើតាមជំហានងាយៗខាងក្រោម!</p>
+      <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+        <div class="mb-6"><p class="text-xl mb-2">Server IP Address:</p><div class="flex justify-center items-center gap-4 bg-gray-100 p-4 rounded-lg"><span id="server-ip" class="text-2xl font-mono text-indigo-600">CubeSabay.apsara.lol</span><button id="copy-ip-btn" class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition"><i class="fas fa-copy mr-2"></i><span id="copy-text">Copy</span></button></div></div>
+        <p class="text-xl mb-6">Version: <strong>Java & Bedrock (ជំនាន់ចុងក្រោយបំផុត)</strong></p>
+        <div class="mt-8 border-t pt-6"><p id="status" class="text-2xl font-bold text-gray-700">កំពុងផ្ទុក...</p><p id="players" class="mt-2 text-lg text-gray-600"></p><p id="motd" class="mt-2 italic text-gray-500"></p></div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ផ្នែក Webstore (បន្ថែមថ្មី) -->
+  <section id="webstore" class="bg-gray-800 py-20 px-6 text-white">
+      <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-4xl font-bold mb-4">🛒 Webstore របស់យើង</h2>
+          <p class="text-lg text-gray-300 mb-8">គាំទ្រ Server ដោយទិញ Rank ដើម្បីទទួលបានសិទ្ធិพิเศษ និង Kit крутые!</p>
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              <div class="bg-gray-700 p-6 rounded-xl border border-yellow-400 shadow-lg"><h3 class="text-2xl font-bold text-yellow-400">💎 VIP</h3><p class="text-xl font-bold mt-2">$2</p></div>
+              <div class="bg-gray-700 p-6 rounded-xl border border-blue-400 shadow-lg"><h3 class="text-2xl font-bold text-blue-400">✨ MVP</h3><p class="text-xl font-bold mt-2">$5</p></div>
+              <div class="bg-gray-700 p-6 rounded-xl border border-red-400 shadow-lg"><h3 class="text-2xl font-bold text-red-400">🌟 Hero</h3><p class="text-xl font-bold mt-2">$10</p></div>
+              <div class="bg-gray-700 p-6 rounded-xl border border-purple-400 shadow-lg"><h3 class="text-2xl font-bold text-purple-400">🔥 Legend</h3><p class="text-xl font-bold mt-2">$15</p></div>
+          </div>
+          <a href="index.html" target="_blank" class="bg-green-500 text-white px-10 py-4 rounded-lg font-bold text-xl hover:bg-green-600 transition shadow-lg transform hover:scale-105">
+              <i class="fas fa-shopping-cart mr-3"></i>ចូលទៅកាន់ Webstore
+          </a>
+      </div>
+  </section>
+
+  <!-- ផ្នែកច្បាប់ (Original) -->
+  <section id="rules" class="py-20 px-6 max-w-6xl mx-auto">
+      <div class="text-center mb-16"><h2 class="text-4xl font-bold text-gray-800">📜 ច្បាប់ និងគោលការណ៍ Server</h2><p class="text-lg text-gray-500 mt-2">សូមគោរពច្បាប់ដើម្បីរក្សាបរិយាកាសលេងដ៏ល្អសម្រាប់អ្នករាល់គ្នា</p></div>
+      <div class="grid md:grid-cols-2 gap-8 text-lg">
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-start"><i class="fas fa-check-circle text-green-500 text-2xl mr-4 mt-1"></i><span><strong>គោរពអ្នកដទៃ:</strong> ហាមប្រើពាក្យអសុរោះ បៀតបៀន ឬរើសអើង។</span></div>
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-start"><i class="fas fa-times-circle text-red-500 text-2xl mr-4 mt-1"></i><span><strong>ហាម Cheat/Hack:</strong> ហាមប្រើប្រាស់កម្មវិធីជំនួយដែលមិនได้รับอนุญาต (X-Ray, Kill Aura, etc.)។</span></div>
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-start"><i class="fas fa-check-circle text-green-500 text-2xl mr-4 mt-1"></i><span><strong>រក្សា Server ឱ្យស្អាត:</strong> ហាមធ្វើឱ្យ Server Lag (e.g., Redstone machines)។</span></div>
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-start"><i class="fas fa-times-circle text-red-500 text-2xl mr-4 mt-1"></i><span><strong>ហាមបំផ្លាញ:</strong> ហាមបំផ្លាញសំណង់របស់អ្នកដទៃដោយគ្មានការអនុញ្ញាត។</span></div>
+      </div>
+  </section>
+
+  <!-- ផ្នែក Gallery (Original) -->
+  <section id="gallery" class="py-20 px-6 bg-gray-200">
+    <div class="text-center mb-16"><h2 class="text-4xl font-bold text-gray-800">🖼️ រូបភាពពីក្នុង Server</h2><p class="text-lg text-gray-500 mt-2">ទស្សនាទិដ្ឋភាពដ៏ស្រស់ស្អាត និងសំណង់ដ៏អស្ចារ្យ</p></div>
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <img src="https://placehold.co/600x400/3498db/ffffff?text=Spawn" alt="Spawn Area" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
+      <img src="https://placehold.co/600x400/e74c3c/ffffff?text=Player+Base" alt="Player Town" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
+      <img src="https://placehold.co/600x400/2ecc71/ffffff?text=Community+Farm" alt="Castle Build" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
+      <img src="https://placehold.co/1200x400/f1c40f/ffffff?text=Epic+Landscape" alt="Community Farm" class="lg:col-span-2 md:col-span-1 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
+      <img src="https://placehold.co/600x400/9b59b6/ffffff?text=Nether+Hub" alt="Nether Hub" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
+    </div>
+  </section>
+
+  <!-- ផ្នែកវីដេអូ (Original) -->
+  <section class="py-20 bg-gray-800 text-center px-6 text-white">
+    <div class="max-w-4xl mx-auto"><h2 class="text-4xl font-bold mb-8">🎥 Minecraft Server Trailer</h2><div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-2xl"><iframe class="w-full h-full" src="https://www.youtube.com/embed/qq0f0Aevlgg" title="CubeSabay Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+  </section>
+
+  <!-- ផ្នែក FAQ (Original) -->
+  <section class="py-20 px-6 max-w-4xl mx-auto">
+    <div class="text-center mb-16"><h2 class="text-4xl font-bold text-gray-800">❓ សំណួរដែលសួរញឹកញាប់ (FAQ)</h2></div>
+    <div class="space-y-4">
+      <div class="bg-white rounded-xl shadow-md"><button class="faq-btn w-full text-left px-6 py-4 flex justify-between items-center font-bold text-lg hover:bg-gray-50 rounded-xl"><span>តើ Server មានគាំទ្រ Bedrock ឬទេ?</span><span class="icon transition-transform transform text-indigo-500"><i class="fas fa-chevron-down"></i></span></button><div class="faq-content px-6 pb-4 hidden text-gray-600"><p class="pt-2 border-t">បាទ/ចាស។ Server របស់យើងគាំទ្រទាំង Java Edition និង Bedrock Edition។ អ្នកអាចលេងបានពី PC, ទូរស័ព្ទ, និង Console។</p></div></div>
+      <div class="bg-white rounded-xl shadow-md"><button class="faq-btn w-full text-left px-6 py-4 flex justify-between items-center font-bold text-lg hover:bg-gray-50 rounded-xl"><span>តើការចូល Discord មានអ្វីពិសេស?</span><span class="icon transition-transform transform text-indigo-500"><i class="fas fa-chevron-down"></i></span></button><div class="faq-content px-6 pb-4 hidden text-gray-600"><p class="pt-2 border-t">ការចូល Discord អាចជួយអ្នកទទួលបានព័ត៌មានថ្មីៗ, ការ Update, ចូលរួម Event, និងជជែកជាមួយមិត្តភក្តិ Minecraft ក្នុងសហគមន៍ CubeSabay។</p></div></div>
+      <div class="bg-white rounded-xl shadow-md"><button class="faq-btn w-full text-left px-6 py-4 flex justify-between items-center font-bold text-lg hover:bg-gray-50 rounded-xl"><span>តើត្រូវបង់ថ្លៃដើម្បីចូលលេងទេ?</span><span class="icon transition-transform transform text-indigo-500"><i class="fas fa-chevron-down"></i></span></button><div class="faq-content px-6 pb-4 hidden text-gray-600"><p class="pt-2 border-t">ការចូលលេង Server គឺ Free! ប៉ុន្តែអ្នកអាចគាំទ្រ Server តាមរយៈការ Donate តាម Webstore របស់យើង ដើម្បីជួយដល់ค่าบำรุงรักษา Server។</p></div></div>
+    </div>
+  </section>
+
+  <!-- Footer (Original) -->
+  <footer class="bg-gray-900 text-gray-300 py-12 text-center">
+    <div class="container mx-auto px-6">
+        <p class="text-2xl font-bold mb-4">CubeSabay Minecraft Server</p>
+        <p class="mb-6">🇰🇭 បង្កើតឡើងសម្រាប់សហគមន៍ Minecraft Survival ខ្មែរ</p>
+        <div class="flex justify-center gap-6 mb-8"><a href="https://discord.gg/yourdiscordlink" target="_blank" class="text-3xl hover:text-indigo-400 transition"><i class="fab fa-discord"></i></a><a href="index.html" target="_blank" class="text-3xl hover:text-green-400 transition"><i class="fas fa-shopping-cart"></i></a></div>
+        <p class="text-gray-500">&copy; 2025 CubeSabay. រក្សាសិទ្ធិគ្រប់យ៉ាង។</p>
+    </div>
+  </footer>
 
   <script>
-    document.getElementById('attackForm').onsubmit = async (e) => {
-      e.preventDefault();
-      const data = {
-        target: document.getElementById('target').value,
-        port: document.getElementById('port').value,
-        threads: document.getElementById('threads').value,
-        requests_per_thread: document.getElementById('requests').value
-      };
+    document.addEventListener("DOMContentLoaded", () => {
+      // เมนูสำหรับมือถือ
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
 
-      const res = await fetch('/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+      // FAQ Accordion
+      document.querySelectorAll(".faq-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const content = btn.nextElementSibling;
+          const icon = btn.querySelector(".icon");
+          content.classList.toggle("hidden");
+          icon.classList.toggle("rotate-180");
+        });
       });
-      const json = await res.json();
-      document.getElementById('result').textContent = JSON.stringify(json, null, 2);
-    };
+
+      // Fetch Minecraft Server Status
+      const ip = "cubesabay.apsara.lol";
+      fetch(`https://api.mcsrvstat.us/2/${ip}`)
+        .then(res => res.json())
+        .then(data => {
+          const statusEl = document.getElementById("status");
+          const playersEl = document.getElementById("players");
+          const motdEl = document.getElementById("motd");
+          if (data.online) {
+            statusEl.innerHTML = `<span class="text-green-500"><i class="fas fa-server"></i> Online</span>`;
+            playersEl.innerHTML = `<i class="fas fa-users"></i> អ្នកលេង Online: <strong>${data.players.online} / ${data.players.max}</strong>`;
+            motdEl.innerText = data.motd?.clean?.join(" ") || "សូមស្វាគមន៍មកកាន់ Server របស់យើង!";
+          } else {
+            statusEl.innerHTML = `<span class="text-red-500"><i class="fas fa-server"></i> Offline</span>`;
+            playersEl.innerText = "Server កំពុងបិទปรับปรุง។";
+          }
+        })
+        .catch(() => {
+          document.getElementById("status").innerHTML = `<span class="text-yellow-500"><i class="fas fa-exclamation-triangle"></i> មិនអាចទាញទិន្នន័យបានទេ</span>`;
+        });
+
+      // ប៊ូតុង Copy IP
+      const copyBtn = document.getElementById('copy-ip-btn');
+      const serverIp = document.getElementById('server-ip').innerText;
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(serverIp).then(() => {
+          const copyText = document.getElementById('copy-text');
+          copyText.innerText = 'Copied!';
+          copyBtn.classList.remove('bg-indigo-500'); copyBtn.classList.add('bg-green-500');
+          setTimeout(() => {
+            copyText.innerText = 'Copy';
+            copyBtn.classList.remove('bg-green-500'); copyBtn.classList.add('bg-indigo-500');
+          }, 2000);
+        });
+      });
+
+      // Animation on Scroll
+      const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  entry.target.classList.add('fade-in');
+                  entry.target.classList.remove('section-hidden');
+                  observer.unobserve(entry.target);
+              }
+          });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('section').forEach(section => {
+          section.classList.add('section-hidden');
+          observer.observe(section);
+      });
+    });
   </script>
 </body>
 </html>
