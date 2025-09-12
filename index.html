@@ -1,235 +1,715 @@
 <!DOCTYPE html>
-<html lang="km">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CubeSabay - Minecraft Survival SMP សម្រាប់ชาวខ្មែរ</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    /* រចនាប័ទ្មបន្ថែមសម្រាប់ Animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in {
-      animation: fadeIn 0.8s ease-out forwards;
-    }
-    .section-hidden {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    .faq-btn .icon.rotate-180 {
-        transform: rotate(180deg);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sreng's Journey | ដំណើររបស់ស្រេង</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bayon&family=Hanuman:wght@100;300;400;700;900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module">
+        // Firebase v12.2.1
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+        import { getAuth, GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, onSnapshot, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBA6KNByP2nrhf5yL7NYO7VvrIzH8lI6rc",
+            authDomain: "website-4ccaa.firebaseapp.com",
+            projectId: "website-4ccaa",
+            storageBucket: "website-4ccaa.appspot.com",
+            messagingSenderId: "859215513748",
+            appId: "1:859215513748:web:305355f640d60151878c81",
+            measurementId: "G-GY4TSFN3KE"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.firebase = { auth, db, GithubAuthProvider, signInWithPopup, signOut, onAuthStateChanged, collection, addDoc, query, onSnapshot, serverTimestamp };
+    </script>
+    <style>
+        :root {
+            --khmer-font: 'Hanuman', serif;
+            --bayon-font: 'Bayon', sans-serif;
+            --english-font: 'Inter', sans-serif;
+            --bg-color: #f8f7f2;
+            --text-color: #3a3a3a;
+            --primary-color: #a0522d;
+            --secondary-color: #d4a373;
+            --accent-color: #e5e5e5;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--english-font);
+        }
+
+        .kh-text, .km { font-family: var(--khmer-font); }
+        .kh-title { font-family: var(--bayon-font); }
+        .en-text, .en { font-family: var(--english-font); }
+
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-bg {
+            background-image: url('https://placehold.co/1920x1080/f8f7f2/a0522d?text=Angkor+Wat+Silhouette');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .lang-switcher:hover .lang-menu {
+            display: block;
+        }
+
+        /* Typing animation */
+        .typed-cursor {
+            opacity: 1;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body class="antialiased leading-relaxed">
 
-  <!-- បឋមកថា (Header) -->
-  <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#" class="text-2xl font-bold text-indigo-600">
-        <i class="fas fa-cube mr-2"></i>CubeSabay
-      </a>
-      <div class="hidden md:flex items-center space-x-6">
-        <a href="#features" class="text-gray-600 hover:text-indigo-600 transition">លក្ខណៈពិសេស</a>
-        <a href="#rules" class="text-gray-600 hover:text-indigo-600 transition">ច្បាប់</a>
-        <a href="#gallery" class="text-gray-600 hover:text-indigo-600 transition">Gallery</a>
-        <a href="index.html" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition shadow">
-          <i class="fas fa-shopping-cart mr-2"></i>Webstore
-        </a>
-      </div>
-      <button class="md:hidden text-2xl" id="mobile-menu-btn">
-        <i class="fas fa-bars"></i>
-      </button>
-    </nav>
-    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-        <a href="#features" class="block py-2 text-gray-600 hover:text-indigo-600">លក្ខណៈពិសេស</a>
-        <a href="#rules" class="block py-2 text-gray-600 hover:text-indigo-600">ច្បាប់</a>
-        <a href="#gallery" class="block py-2 text-gray-600 hover:text-indigo-600">Gallery</a>
-        <a href="index.html" target="_blank" class="block mt-2 bg-green-500 text-white text-center px-4 py-2 rounded-lg font-semibold">Webstore</a>
-    </div>
-  </header>
-
-  <!-- ផ្នែក Hero -->
-  <section class="bg-cover bg-center py-28 px-6 text-center text-white" style="background-image: url('https://avatars.githubusercontent.com/u/169924051?s=400&v=4');">
-    <div class="bg-black/50 rounded-2xl p-8 max-w-4xl mx-auto">
-        <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">សូមស្វាគមន៍មកកាន់ <span class="text-yellow-300">CubeSabay</span> 🇰🇭</h1>
-        <p class="text-xl mb-8">ពិភព Minecraft Survival SMP ដ៏រស់រវើកសម្រាប់សហគមន៍ខ្មែរ</p>
-        <div class="flex justify-center gap-4 flex-wrap">
-          <a href="#join" class="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition">
-            <i class="fas fa-play mr-2"></i>ចូលរួមឥឡូវនេះ
-          </a>
-          <a href="https://discord.gg/yourdiscordlink" target="_blank" class="bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-indigo-400 transform hover:scale-105 transition">
-            <i class="fab fa-discord mr-2"></i>ចូល Discord
-          </a>
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glassmorphism" id="header">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold kh-title text-primary-color" data-page="home">ស្រេង | Sreng</a>
+            <div class="hidden md:flex items-center space-x-8 text-lg">
+                <a href="#" class="nav-link active" data-page="home">Home</a>
+                <a href="#" class="nav-link" data-page="about">About</a>
+                <a href="#" class="nav-link" data-page="education">Education</a>
+                <a href="#" class="nav-link" data-page="reflection">Reflection</a>
+                <a href="#" class="nav-link" data-page="projects">Projects</a>
+                <a href="#" class="nav-link" data-page="contact">Contact & Tools</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                 <!-- Language Switcher -->
+                <div class="relative lang-switcher">
+                    <button class="flex items-center space-x-1 focus:outline-none">
+                        <i data-feather="globe" class="w-5 h-5"></i>
+                        <span id="current-lang">EN</span>
+                        <i data-feather="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                    <div class="lang-menu absolute hidden right-0 mt-2 py-2 w-24 bg-white rounded-md shadow-xl z-20">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-lang="en">English</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 kh-text" data-lang="km">ខ្មែរ</a>
+                    </div>
+                </div>
+                <!-- Auth Button -->
+                <div id="auth-container"></div>
+                 <!-- Mobile Menu Button -->
+                <button class="md:hidden" id="mobile-menu-button">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="home">Home</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="about">About</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="education">Education</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="reflection">Reflection</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="projects">Projects</a>
+            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="contact">Contact & Tools</a>
         </div>
-    </div>
-  </section>
+    </header>
 
-  <!-- ផ្នែកលក្ខណៈពិសេស (Original) -->
-  <section id="features" class="py-20 px-6 max-w-6xl mx-auto">
-    <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-gray-800">✨ អ្វីដែលធ្វើឲ្យ CubeSabay ពិសេស?</h2>
-        <p class="text-lg text-gray-500 mt-2">ស្វែងយល់ពីលក្ខណៈពិសេសដែលធ្វើឱ្យ Server របស់យើងអស្ចារ្យ</p>
-    </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-indigo-500 mb-4"><i class="fas fa-gamepad"></i></div><h3 class="text-2xl font-bold mb-3">🌍 Cross-Play</h3><p class="text-gray-600">លេងបានទាំង Java Edition និង Bedrock Edition (PC, ទូរស័ព្ទ, Console) នៅក្នុង Server តែមួយ។</p></div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-yellow-500 mb-4"><i class="fas fa-star"></i></div><h3 class="text-2xl font-bold mb-3">⭐ ប្រព័ន្ធ Rank</h3><p class="text-gray-600">ឡើង Rank ពី Member ទៅ VIP, Legend, និង GOD! ជាមួយនឹង Kit និងសិទ្ធិពិសេសៗ។</p></div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-green-500 mb-4"><i class="fas fa-dollar-sign"></i></div><h3 class="text-2xl font-bold mb-3">💰 សេដ្ឋកិច្ច & ការងារ</h3><p class="text-gray-600">ជ្រើសរើសការងារដូចជា ជីករ៉ែ ឬ កាប់ឈើ ដើម្បីរកលុយ និងបង្កើតហាងផ្ទាល់ខ្លួន។</p></div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-red-500 mb-4"><i class="fas fa-shield-alt"></i></div><h3 class="text-2xl font-bold mb-3">🛡️ ការពារដី</h3><p class="text-gray-600">Claim ដី និងការពារផ្ទះរបស់អ្នកពីការបំផ្លាញដោយអ្នកលេងផ្សេង។</p></div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-blue-500 mb-4"><i class="fas fa-box-open"></i></div><h3 class="text-2xl font-bold mb-3">🎁 Kit ពិសេស</h3><p class="text-gray-600">ទទួលបាន Kit ប្រចាំថ្ងៃ និងសប្តាហ៍អាស្រ័យលើ Rank ដើម្បីជួយសម្រួលដល់ការលេង។</p></div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"><div class="text-4xl text-purple-500 mb-4"><i class="fas fa-sign-in-alt"></i></div><h3 class="text-2xl font-bold mb-3">✅ Auto Login</h3><p class="text-gray-600">សម្រាប់អ្នកលេង Premium (Java) អាចចូលបានភ្លាមៗដោយមិនចាំបាច់ Login។</p></div>
-    </div>
-  </section>
+    <!-- Main Content -->
+    <main>
+        <!-- Page: Home -->
+        <section id="home" class="page min-h-screen flex items-center justify-center hero-bg">
+            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+            <div class="text-center text-white z-10 p-4">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">
+                    <span class="en">Welcome to My Journey</span>
+                    <span class="kh-text hidden">សូមស្វាគមន៍មកកាន់ដំណើររបស់ខ្ញុំ</span>
+                </h1>
+                <p class="text-xl md:text-3xl mb-8">
+                    <span class="en">I am a <span id="typed-text" class="text-secondary-color"></span><span class="typed-cursor">|</span></span>
+                    <span class="kh-text hidden">ខ្ញុំជា <span id="typed-text-km" class="text-secondary-color"></span><span class="typed-cursor">|</span></span>
+                </p>
+                <a href="#" data-page="about" class="bg-primary-color hover:bg-opacity-80 text-white font-bold py-3 px-8 rounded-full transition duration-300">
+                    <span class="en">Discover My Story</span>
+                    <span class="kh-text hidden">ស្វែងយល់ពីរឿងរ៉ាវរបស់ខ្ញុំ</span>
+                </a>
+            </div>
+        </section>
 
-  <!-- ផ្នែករបៀបចូលរួម (Original) -->
-  <section id="join" class="bg-gray-200 py-20 px-6">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-4xl font-bold text-gray-800 mb-4">🚀 របៀបចូលរួមលេង</h2>
-      <p class="text-lg text-gray-600 mb-8">ត្រៀមខ្លួនសម្រាប់ការផ្សងព្រេងថ្មីហើយឬនៅ? ធ្វើតាមជំហានងាយៗខាងក្រោម!</p>
-      <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-        <div class="mb-6"><p class="text-xl mb-2">Server IP Address:</p><div class="flex justify-center items-center gap-4 bg-gray-100 p-4 rounded-lg"><span id="server-ip" class="text-2xl font-mono text-indigo-600">CubeSabay.apsara.lol</span><button id="copy-ip-btn" class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition"><i class="fas fa-copy mr-2"></i><span id="copy-text">Copy</span></button></div></div>
-        <p class="text-xl mb-6">Version: <strong>Java & Bedrock (ជំនាន់ចុងក្រោយបំផុត)</strong></p>
-        <div class="mt-8 border-t pt-6"><p id="status" class="text-2xl font-bold text-gray-700">កំពុងផ្ទុក...</p><p id="players" class="mt-2 text-lg text-gray-600"></p><p id="motd" class="mt-2 italic text-gray-500"></p></div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- ផ្នែក Webstore (បន្ថែមថ្មី) -->
-  <section id="webstore" class="bg-gray-800 py-20 px-6 text-white">
-      <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-4xl font-bold mb-4">🛒 Webstore របស់យើង</h2>
-          <p class="text-lg text-gray-300 mb-8">គាំទ្រ Server ដោយទិញ Rank ដើម្បីទទួលបានសិទ្ធិพิเศษ និង Kit крутые!</p>
-          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-              <div class="bg-gray-700 p-6 rounded-xl border border-yellow-400 shadow-lg"><h3 class="text-2xl font-bold text-yellow-400">💎 VIP</h3><p class="text-xl font-bold mt-2">$2</p></div>
-              <div class="bg-gray-700 p-6 rounded-xl border border-blue-400 shadow-lg"><h3 class="text-2xl font-bold text-blue-400">✨ MVP</h3><p class="text-xl font-bold mt-2">$5</p></div>
-              <div class="bg-gray-700 p-6 rounded-xl border border-red-400 shadow-lg"><h3 class="text-2xl font-bold text-red-400">🌟 Hero</h3><p class="text-xl font-bold mt-2">$10</p></div>
-              <div class="bg-gray-700 p-6 rounded-xl border border-purple-400 shadow-lg"><h3 class="text-2xl font-bold text-purple-400">🔥 Legend</h3><p class="text-xl font-bold mt-2">$15</p></div>
-          </div>
-          <a href="index.html" target="_blank" class="bg-green-500 text-white px-10 py-4 rounded-lg font-bold text-xl hover:bg-green-600 transition shadow-lg transform hover:scale-105">
-              <i class="fas fa-shopping-cart mr-3"></i>ចូលទៅកាន់ Webstore
-          </a>
-      </div>
-  </section>
+        <!-- Page: About -->
+        <section id="about" class="page hidden py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+                        <span class="en">My Story</span>
+                        <span class="kh-title hidden">រឿងរ៉ាវរបស់ខ្ញុំ</span>
+                    </h2>
+                    
+                    <div class="space-y-12 text-lg leading-relaxed">
+                        <!-- Personal Story -->
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-primary-color">
+                               <span class="en">The Path Unfolding</span>
+                               <span class="kh-text hidden">ផ្លូវដែលកំពុងលាតត្រដាង</span>
+                            </h3>
+                            <p class="en mb-4">My journey began not on a paved road, but on a dusty path in a small Cambodian village, where the horizon seemed both infinitely far and tantalizingly close. Education wasn't just about books; it was about understanding the whispers of the rice paddies, the resilience of my elders, and the silent dreams that bloomed in the quiet of the night. Each day was a lesson in perseverance, a chapter in a story I was only beginning to understand was my own. The biggest challenge wasn't the lack of resources, but the struggle to hold onto a vision for the future when the present demanded so much. Yet, like the lotus flower that rises from muddy waters, I learned that the most profound growth often comes from the most difficult circumstances.</p>
+                            <p class="kh-text hidden mb-4">ដំណើររបស់ខ្ញុំមិនបានចាប់ផ្តើមនៅលើផ្លូវកៅស៊ូទេ ប៉ុន្តែនៅលើផ្លូវដីដ៏ធូលីក្នុងភូមិតូចមួយនៃប្រទេសកម្ពុជា ដែលផ្តេកមេឃហាក់ដូចជានៅឆ្ងាយគ្មានព្រំដែន ហើយក៏ទាក់ទាញចិត្តយ៉ាងខ្លាំង។ ការអប់រំមិនមែនត្រឹមតែសៀវភៅទេ វាជាការយល់ដឹងពីសំឡេងខ្សឹបៗនៃវាលស្រែ ភាពធន់រឹងមាំរបស់ចាស់ទុំ និងក្តីសុបិន្តស្ងប់ស្ងាត់ដែលរីកដុះដាលក្នុងភាពស្ងប់ស្ងាត់នៃរាត្រី។ ថ្ងៃនីមួយៗគឺជាមេរៀននៃការតស៊ូ ជាជំពេកមួយក្នុងរឿងរ៉ាវដែលខ្ញុំទើបតែចាប់ផ្តើមយល់ថាជារបស់ខ្ញុំផ្ទាល់។ បញ្ហាប្រឈមធំបំផុតមិនមែនជាការខ្វះខាតធនធានទេ ប៉ុន្តែជាការតស៊ូដើម្បីរក្សាចក្ខុវិស័យសម្រាប់អនាគត នៅពេលដែលបច្ចុប្បន្នកាលទាមទារយ៉ាងច្រើន។ យ៉ាងណាមិញ ដូចជាផ្កាឈូកដែលដុះចេញពីទឹកភក់ ខ្ញុំបានរៀនថាកំណើនដ៏ជ្រាលជ្រៅបំផុត ច្រើនតែកើតចេញពីកាលៈទេសៈដ៏លំបាកបំផុត។</p>
+                        </div>
 
-  <!-- ផ្នែកច្បាប់ (Original) -->
-  <section id="rules" class="py-20 px-6 max-w-6xl mx-auto">
-      <div class="text-center mb-16"><h2 class="text-4xl font-bold text-gray-800">📜 ច្បាប់ និងគោលការណ៍ Server</h2><p class="text-lg text-gray-500 mt-2">សូមគោរពច្បាប់ដើម្បីរក្សាបរិយាកាសលេងដ៏ល្អសម្រាប់អ្នករាល់គ្នា</p></div>
-      <div class="grid md:grid-cols-2 gap-8 text-lg">
-          <div class="bg-white p-6 rounded-lg shadow-md flex items-start"><i class="fas fa-check-circle text-green-500 text-2xl mr-4 mt-1"></i><span><strong>គោរពអ្នកដទៃ:</strong> ហាមប្រើពាក្យអសុរោះ បៀតបៀន ឬរើសអើង។</span></div>
-          <div class="bg-white p-6 rounded-lg shadow-md flex items-start"><i class="fas fa-times-circle text-red-500 text-2xl mr-4 mt-1"></i><span><strong>ហាម Cheat/Hack:</strong> ហាមប្រើប្រាស់កម្មវិធីជំនួយដែលមិនได้รับอนุญาต (X-Ray, Kill Aura, etc.)។</span></div>
-          <div class="bg-white p-6 rounded-lg shadow-md flex items-start"><i class="fas fa-check-circle text-green-500 text-2xl mr-4 mt-1"></i><span><strong>រក្សា Server ឱ្យស្អាត:</strong> ហាមធ្វើឱ្យ Server Lag (e.g., Redstone machines)។</span></div>
-          <div class="bg-white p-6 rounded-lg shadow-md flex items-start"><i class="fas fa-times-circle text-red-500 text-2xl mr-4 mt-1"></i><span><strong>ហាមបំផ្លាញ:</strong> ហាមបំផ្លាញសំណង់របស់អ្នកដទៃដោយគ្មានការអនុញ្ញាត។</span></div>
-      </div>
-  </section>
+                        <!-- Philosophy -->
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-primary-color">
+                                <span class="en">Philosophy of Learning</span>
+                                <span class="kh-text hidden">ទស្សនវិជ្ជានៃការរៀនសូត្រ</span>
+                            </h3>
+                            <p class="en mb-4">I believe that learning is an act of breathing. We inhale knowledge, experiences, and the stories of others, and we exhale understanding, creativity, and compassion. It is not a destination but a continuous flow, a river that carves its own path through the landscape of our lives. My philosophy is rooted in the idea of "self-excavation"—digging deep within to uncover the potential that lies dormant. The classroom provides the map, but the real exploration happens in the quiet moments of reflection, in the courage to ask "why," and in the humility to admit "I don't know." I see every challenge as a teacher and every failure as a stepping stone, not a stumbling block.</p>
+                             <p class="kh-text hidden mb-4">ខ្ញុំជឿថាការរៀនសូត្រគឺជាសកម្មភាពនៃការដកដង្ហើម។ យើងស្រូបយកចំណេះដឹង បទពិសោធន៍ និងរឿងរ៉ាវរបស់អ្នកដទៃ ហើយយើងបញ្ចេញមកវិញនូវការយល់ដឹង ការច្នៃប្រឌិត និងក្តីមេត្តា។ វាមិនមែនជាគោលដៅទេ ប៉ុន្តែជាលំហូរឥតឈប់ឈរ ជាទន្លេដែលឆ្លាក់ផ្លូវរបស់ខ្លួនតាមរយៈទិដ្ឋភាពនៃជីវិតរបស់យើង។ ទស្សនវិជ្ជារបស់ខ្ញុំមានឫសគល់នៅក្នុងគំនិតនៃ "ការជីកកកាយខ្លួនឯង" — ការជីកជ្រៅទៅក្នុងខ្លួនដើម្បីស្វែងរកសក្តានុពលដែលមិនទាន់បានបង្ហាញ។ ថ្នាក់រៀនផ្តល់នូវផែនទី ប៉ុន្តែការរុករកពិតប្រាកដកើតឡើងក្នុងពេលស្ងប់ស្ងាត់នៃការឆ្លុះបញ្ចាំង ក្នុងភាពក្លាហានក្នុងការសួរថា "ហេតុអ្វី" និងក្នុងភាពរាបទាបក្នុងការยอมรับថា "ខ្ញុំមិនដឹង"។ ខ្ញុំមើលឃើញបញ្ហាប្រឈមគ្រប់យ៉ាងជាគ្រូ ហើយរាល់បរាជ័យជាជំហានឆ្ពោះទៅមុខ មិនមែនជាឧបសគ្គទេ។</p>
+                        </div>
+                         <!-- Life Reflections -->
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-primary-color">
+                                <span class="en">Reflections on Life</span>
+                                <span class="kh-text hidden">ការឆ្លុះបញ្ចាំងពីជីវិត</span>
+                            </h3>
+                            <p class="en mb-4">Life, to me, is like weaving a traditional Cambodian silk tapestry. Each thread represents a moment, a person, a choice. Some threads are vibrant and full of joy, others are dark and represent hardship. Alone, a single thread is fragile, but woven together, they create a pattern of strength, beauty, and complexity that tells a unique story. My dream is not just to weave my own story, but to inspire others to see the beauty in their own tapestry, to embrace the tangled knots and the brilliant colors, and to understand that every thread, no matter its hue, is essential to the final masterpiece.</p>
+                             <p class="kh-text hidden mb-4">ជីវិតសម្រាប់ខ្ញុំ ប្រៀបដូចជាការត្បាញសូត្រខ្មែរបុរាណ។ សរសៃសូត្រនីមួយៗតំណាងឱ្យពេលវេលា មនុស្សម្នាក់ ការជ្រើសរើសមួយ។ សរសៃខ្លះមានពណ៌ស្រស់ឆើតឆាយពោរពេញដោយភាពរីករាយ សរសៃខ្លះទៀតមានពណ៌ខ្មៅតំណាងឱ្យការលំបាក។ តែម្នាក់ឯង សរសៃសូត្រមួយគឺផុយស្រួយ ប៉ុន្តែនៅពេលត្បាញចូលគ្នា វាបង្កើតបានជាក្បាច់ដែលរឹងមាំ ស្រស់ស្អាត និងស្មុគស្មាញ ដែលប្រាប់ពីរឿងរ៉ាវតែមួយគត់។ ក្តីសុបិន្តរបស់ខ្ញុំមិនត្រឹមតែជាការត្បាញរឿងរ៉ាវផ្ទាល់ខ្លួនរបស់ខ្ញុំប៉ុណ្ណោះទេ ប៉ុន្តែគឺដើម្បីជម្រុញអ្នកដទៃឱ្យមើលឃើញភាពស្រស់ស្អាតនៅក្នុងកម្រងសូត្ររបស់ពួកគេផ្ទាល់ ដើម្បីទទួលយកនូវភាពស្មុគស្មាញនិងពណ៌ដ៏អស្ចារ្យ ហើយដើម្បីយល់ថាគ្រប់សរសៃសូត្រ ទោះបីជាមានពណ៌អ្វីក៏ដោយ គឺសុទ្ធតែចាំបាច់សម្រាប់ស្នាដៃចុងក្រោយ។</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- ផ្នែក Gallery (Original) -->
-  <section id="gallery" class="py-20 px-6 bg-gray-200">
-    <div class="text-center mb-16"><h2 class="text-4xl font-bold text-gray-800">🖼️ រូបភាពពីក្នុង Server</h2><p class="text-lg text-gray-500 mt-2">ទស្សនាទិដ្ឋភាពដ៏ស្រស់ស្អាត និងសំណង់ដ៏អស្ចារ្យ</p></div>
-    <div class="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <img src="https://placehold.co/600x400/3498db/ffffff?text=Spawn" alt="Spawn Area" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
-      <img src="https://placehold.co/600x400/e74c3c/ffffff?text=Player+Base" alt="Player Town" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
-      <img src="https://placehold.co/600x400/2ecc71/ffffff?text=Community+Farm" alt="Castle Build" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
-      <img src="https://placehold.co/1200x400/f1c40f/ffffff?text=Epic+Landscape" alt="Community Farm" class="lg:col-span-2 md:col-span-1 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
-      <img src="https://placehold.co/600x400/9b59b6/ffffff?text=Nether+Hub" alt="Nether Hub" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
-    </div>
-  </section>
+        <!-- Page: Education -->
+        <section id="education" class="page hidden py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+                    <span class="en">My Learning Path</span>
+                    <span class="kh-title hidden">เส้นทางการเรียนรู้ของฉัน</span>
+                </h2>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-4">
+                        <h3 class="text-3xl font-bold text-primary-color">
+                            <span class="en">Koh Prak High School</span>
+                            <span class="kh-text hidden">វិទ្យាល័យកោះប្រាក់</span>
+                        </h3>
+                        <p class="text-xl font-semibold">
+                            <span class="en">Expected Graduation: 2025</span>
+                             <span class="kh-text hidden">ឆ្នាំបញ្ចប់ការសិក្សា៖ ២០២៥</span>
+                        </p>
+                        <p class="text-lg leading-relaxed en">
+                            Koh Prak High School is more than just a building with classrooms; it's a crucible where my aspirations are being forged. It's where I learned that the quadratic formula could solve more than just math problems—it taught me that complex challenges have structured solutions. Here, history is not a collection of dates, but a series of conversations with the past, helping me understand the present and shape the future.
+                        </p>
+                         <p class="text-lg leading-relaxed kh-text hidden">
+                            វិទ្យាល័យកោះប្រាក់មិនមែនត្រឹមតែជាអគារដែលមានថ្នាក់រៀនទេ វាជាកន្លែងដែលបំណងប្រាថ្នារបស់ខ្ញុំត្រូវបានដុះខាត់។ នៅទីនេះហើយដែលខ្ញុំបានរៀនថាសមីការដឺក្រេទីពីរអាចដោះស្រាយបញ្ហាបានច្រើនជាងគណិតវិទ្យា — វាបានបង្រៀនខ្ញុំថាបញ្ហាប្រឈមដ៏ស្មុគស្មាញមានដំណោះស្រាយដែលមានរចនាសម្ព័ន្ធ។ នៅទីនេះ ប្រវត្តិសាស្ត្រមិនមែនជាការប្រមូលផ្តុំកាលបរិច្ឆេទទេ ប៉ុន្តែជាការសន្ទនាជាមួយអតីតកាល ដែលជួយខ្ញុំឱ្យយល់ពីបច្ចុប្បន្ននិងកសាងអនាគត។
+                        </p>
+                    </div>
+                     <div class="p-8 rounded-lg glassmorphism shadow-lg border border-gray-200">
+                        <h4 class="text-2xl font-bold mb-4 text-primary-color">
+                            <span class="en">Beyond the Curriculum</span>
+                             <span class="kh-text hidden">លើសពីកម្មវិធីសិក្សា</span>
+                        </h4>
+                        <p class="text-lg en">
+                            My real education happens when the bell rings. I am a firm believer in self-learning. I spend hours diving into online courses, devouring articles on technology and philosophy, and practicing coding. For me, the internet is the world's largest library, and I am its most eager patron. Practical experience is my textbook; building a small web application or writing a script to automate a task teaches me more than any lecture. It's in the struggle of debugging code at 2 AM that I find my deepest understanding.
+                        </p>
+                         <p class="text-lg kh-text hidden">
+                           ការអប់រំពិតប្រាកដរបស់ខ្ញុំកើតឡើងនៅពេលដែលជួងរោទ៍។ ខ្ញុំជាអ្នកជឿជាក់លើការរៀនដោយខ្លួនឯង។ ខ្ញុំចំណាយពេលជាច្រើនម៉ោងក្នុងការសិក្សាវគ្គសិក្សាអនឡាញ អានអត្ថបទអំពីបច្ចេកវិទ្យានិងទស្សនវិជ្ជា និងអនុវត្តការសរសេរកូដ។ សម្រាប់ខ្ញុំ អ៊ីនធឺណិតគឺជាបណ្ណាល័យដ៏ធំបំផុតរបស់ពិភពលោក ហើយខ្ញុំជាអ្នកគាំទ្រដ៏กระตือรือร้นបំផុតរបស់វា។ បទពិសោធន៍ជាក់ស្តែងគឺជាសៀវភៅសិក្សារបស់ខ្ញុំ ការបង្កើតកម្មវិធីបណ្ដាញតូចមួយឬការសរសេរស្គ្រីបដើម្បីធ្វើស្វ័យប្រវត្តិកម្មកិច្ចការមួយបង្រៀនខ្ញុំច្រើនជាងការบรรยายណាមួយ។ វាគឺនៅក្នុងការតស៊ូនៃការកែកំហុសកូដនៅម៉ោង 2 ទៀបភ្លឺដែលខ្ញុំរកឃើញការយល់ដឹងដ៏ជ្រាលជ្រៅបំផុតរបស់ខ្ញុំ។
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- ផ្នែកវីដេអូ (Original) -->
-  <section class="py-20 bg-gray-800 text-center px-6 text-white">
-    <div class="max-w-4xl mx-auto"><h2 class="text-4xl font-bold mb-8">🎥 Minecraft Server Trailer</h2><div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-2xl"><iframe class="w-full h-full" src="https://www.youtube.com/embed/qq0f0Aevlgg" title="CubeSabay Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
-  </section>
+        <!-- Page: Reflection -->
+        <section id="reflection" class="page hidden py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
+                     <span class="en">Seeds of Thought</span>
+                     <span class="kh-title hidden">គ្រាប់ពូជនៃការគិត</span>
+                </h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Reflection Card 1 -->
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <p class="text-xl italic mb-4 en">"Identity is not found, but forged. It is the vessel we build, plank by plank, from the wreckage of our storms and the timber of our dreams."</p>
+                        <p class="text-xl italic mb-4 kh-text hidden">"អត្តសញ្ញាណមិនមែនជាអ្វីដែលត្រូវរកឃើញទេ តែជាអ្វីដែលត្រូវសាង។ វាជាសំពៅដែលយើងសង់ បន្ទះឈើមួយៗ ពីបំណែកនៃព្យុះរបស់យើង និងឈើនៃក្តីសុបិន្តរបស់យើង។"</p>
+                        <p class="text-right font-bold text-primary-color">- Sreng</p>
+                    </div>
+                    <!-- Reflection Card 2 -->
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <p class="text-xl italic mb-4 en">"Hope is not a lottery ticket you clutch in your hand; it is the hammer you use to build a door when you are surrounded by walls."</p>
+                        <p class="text-xl italic mb-4 kh-text hidden">"ក្តីសង្ឃឹមមិនមែនជាសំបុត្រឆ្នោតដែលអ្នកកាន់ក្នុងដៃទេ វាជាញញួរដែលអ្នកប្រើដើម្បីសង់ទ្វារ នៅពេលអ្នកត្រូវបានហ៊ុំព័ទ្ធដោយជញ្ជាំង។"</p>
+                        <p class="text-right font-bold text-primary-color">- Sreng</p>
+                    </div>
+                    <!-- Reflection Card 3 -->
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                         <p class="text-xl italic mb-4 en">"Growth is the quiet conversation between the part of you that wants to stay comfortable and the part that whispers of the mountains you have yet to climb."</p>
+                         <p class="text-xl italic mb-4 kh-text hidden">"ការเติบโตคือการสนทนาที่เงียบสงบระหว่างส่วนหนึ่งของคุณที่ต้องการอยู่อย่างสบายๆ และส่วนหนึ่งที่กระซิบถึงภูเขาที่คุณยังไม่ได้ปีน"</p>
+                        <p class="text-right font-bold text-primary-color">- Sreng</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- ផ្នែក FAQ (Original) -->
-  <section class="py-20 px-6 max-w-4xl mx-auto">
-    <div class="text-center mb-16"><h2 class="text-4xl font-bold text-gray-800">❓ សំណួរដែលសួរញឹកញាប់ (FAQ)</h2></div>
-    <div class="space-y-4">
-      <div class="bg-white rounded-xl shadow-md"><button class="faq-btn w-full text-left px-6 py-4 flex justify-between items-center font-bold text-lg hover:bg-gray-50 rounded-xl"><span>តើ Server មានគាំទ្រ Bedrock ឬទេ?</span><span class="icon transition-transform transform text-indigo-500"><i class="fas fa-chevron-down"></i></span></button><div class="faq-content px-6 pb-4 hidden text-gray-600"><p class="pt-2 border-t">បាទ/ចាស។ Server របស់យើងគាំទ្រទាំង Java Edition និង Bedrock Edition។ អ្នកអាចលេងបានពី PC, ទូរស័ព្ទ, និង Console។</p></div></div>
-      <div class="bg-white rounded-xl shadow-md"><button class="faq-btn w-full text-left px-6 py-4 flex justify-between items-center font-bold text-lg hover:bg-gray-50 rounded-xl"><span>តើការចូល Discord មានអ្វីពិសេស?</span><span class="icon transition-transform transform text-indigo-500"><i class="fas fa-chevron-down"></i></span></button><div class="faq-content px-6 pb-4 hidden text-gray-600"><p class="pt-2 border-t">ការចូល Discord អាចជួយអ្នកទទួលបានព័ត៌មានថ្មីៗ, ការ Update, ចូលរួម Event, និងជជែកជាមួយមិត្តភក្តិ Minecraft ក្នុងសហគមន៍ CubeSabay។</p></div></div>
-      <div class="bg-white rounded-xl shadow-md"><button class="faq-btn w-full text-left px-6 py-4 flex justify-between items-center font-bold text-lg hover:bg-gray-50 rounded-xl"><span>តើត្រូវបង់ថ្លៃដើម្បីចូលលេងទេ?</span><span class="icon transition-transform transform text-indigo-500"><i class="fas fa-chevron-down"></i></span></button><div class="faq-content px-6 pb-4 hidden text-gray-600"><p class="pt-2 border-t">ការចូលលេង Server គឺ Free! ប៉ុន្តែអ្នកអាចគាំទ្រ Server តាមរយៈការ Donate តាម Webstore របស់យើង ដើម្បីជួយដល់ค่าบำรุงรักษา Server។</p></div></div>
-    </div>
-  </section>
+        <!-- Page: Projects -->
+        <section id="projects" class="page hidden py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
+                     <span class="en">My Projects</span>
+                     <span class="kh-title hidden">គម្រោងរបស់ខ្ញុំ</span>
+                </h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project Card 1 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/d4a373/f8f7f2?text=Portfolio+v1" alt="Project 1" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">
+                                <span class="en">Personal Portfolio v1</span>
+                                <span class="kh-text hidden">គេហទំព័រផ្ទាល់ខ្លួន v1</span>
+                            </h3>
+                            <p class="text-gray-600 mb-4">
+                                <span class="en">My first attempt at creating a personal website to showcase my skills and journey. Focused on clean HTML and CSS.</span>
+                                <span class="kh-text hidden">ការប៉ុនប៉ងដំបូងរបស់ខ្ញុំក្នុងការបង្កើតគេហទំព័រផ្ទាល់ខ្លួនដើម្បីបង្ហាញពីជំនាញ និងដំណើររបស់ខ្ញុំ។ ផ្តោតលើ HTML និង CSS សុទ្ធ។</span>
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <div class="flex space-x-2">
+                                    <span class="bg-secondary-color bg-opacity-20 text-secondary-color px-2 py-1 text-sm rounded">HTML</span>
+                                    <span class="bg-secondary-color bg-opacity-20 text-secondary-color px-2 py-1 text-sm rounded">CSS</span>
+                                </div>
+                                <div class="flex space-x-3">
+                                    <a href="#" class="text-gray-500 hover:text-primary-color"><i data-feather="github"></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-primary-color"><i data-feather="external-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project Card 2 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/a0522d/f8f7f2?text=Khmer+Proverb+API" alt="Project 2" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">
+                                <span class="en">Khmer Proverb API</span>
+                                 <span class="kh-text hidden">API សុភាសិតខ្មែរ</span>
+                            </h3>
+                            <p class="text-gray-600 mb-4">
+                                <span class="en">A simple REST API that serves random Cambodian proverbs. Built with Node.js and Express to practice back-end development.</span>
+                                <span class="kh-text hidden">REST API សាមញ្ញមួយដែលផ្តល់សុភាសិតខ្មែរចៃដន្យ។ បង្កើតឡើងជាមួយ Node.js និង Express ដើម្បីអនុវត្តការអភិវឌ្ឍន៍ back-end។</span>
+                            </p>
+                             <div class="flex justify-between items-center">
+                                <div class="flex space-x-2">
+                                    <span class="bg-secondary-color bg-opacity-20 text-secondary-color px-2 py-1 text-sm rounded">Node.js</span>
+                                    <span class="bg-secondary-color bg-opacity-20 text-secondary-color px-2 py-1 text-sm rounded">Express</span>
+                                </div>
+                                <div class="flex space-x-3">
+                                    <a href="#" class="text-gray-500 hover:text-primary-color"><i data-feather="github"></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-primary-color"><i data-feather="external-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project Card 3 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://placehold.co/600x400/3a3a3a/f8f7f2?text=Weather+App" alt="Project 3" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">
+                                <span class="en">Simple Weather App</span>
+                                <span class="kh-text hidden">កម្មវិធីអាកាសធាតុសាមញ្ញ</span>
+                            </h3>
+                            <p class="text-gray-600 mb-4">
+                                <span class="en">A web app that fetches and displays weather data from a third-party API. A great exercise in handling asynchronous JavaScript.</span>
+                                 <span class="kh-text hidden">កម្មវិធីគេហទំព័រដែលទាញយក និងបង្ហាញទិន្នន័យអាកាសធាតុពី API របស់ភាគីទីបី។ ជាលំហាត់ដ៏ល្អក្នុងការจัดการ JavaScript ដែលមិន đồng bộ។</span>
+                            </p>
+                             <div class="flex justify-between items-center">
+                                <div class="flex space-x-2">
+                                    <span class="bg-secondary-color bg-opacity-20 text-secondary-color px-2 py-1 text-sm rounded">JavaScript</span>
+                                    <span class="bg-secondary-color bg-opacity-20 text-secondary-color px-2 py-1 text-sm rounded">API</span>
+                                </div>
+                                <div class="flex space-x-3">
+                                    <a href="#" class="text-gray-500 hover:text-primary-color"><i data-feather="github"></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-primary-color"><i data-feather="external-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- Footer (Original) -->
-  <footer class="bg-gray-900 text-gray-300 py-12 text-center">
-    <div class="container mx-auto px-6">
-        <p class="text-2xl font-bold mb-4">CubeSabay Minecraft Server</p>
-        <p class="mb-6">🇰🇭 បង្កើតឡើងសម្រាប់សហគមន៍ Minecraft Survival ខ្មែរ</p>
-        <div class="flex justify-center gap-6 mb-8"><a href="https://discord.gg/yourdiscordlink" target="_blank" class="text-3xl hover:text-indigo-400 transition"><i class="fab fa-discord"></i></a><a href="index.html" target="_blank" class="text-3xl hover:text-green-400 transition"><i class="fas fa-shopping-cart"></i></a></div>
-        <p class="text-gray-500">&copy; 2025 CubeSabay. រក្សាសិទ្ធិគ្រប់យ៉ាង។</p>
-    </div>
-  </footer>
+        <!-- Page: Contact & Tools -->
+        <section id="contact" class="page hidden py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+                     <span class="en">Connect & Collaborate</span>
+                     <span class="kh-title hidden">เชื่อมต่อและร่วมมือ</span>
+                </h2>
+                <div class="grid lg:grid-cols-2 gap-16">
+                    <!-- Contact & Comments -->
+                    <div>
+                        <h3 class="text-3xl font-bold mb-6 text-primary-color">
+                           <span class="en">Leave a Message</span>
+                           <span class="kh-text hidden">ฝากข้อความ</span>
+                        </h3>
+                        <form id="contact-form" class="space-y-4 mb-12">
+                            <input type="text" placeholder="Your Name" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none">
+                            <input type="email" placeholder="Your Email" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none">
+                            <textarea rows="5" placeholder="Your Message" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none"></textarea>
+                            <button type="submit" class="bg-primary-color text-white font-bold py-3 px-6 rounded-md hover:bg-opacity-90 transition-colors">
+                                <span class="en">Send</span>
+                                <span class="kh-text hidden">ส่ง</span>
+                            </button>
+                        </form>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // เมนูสำหรับมือถือ
-      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+                        <hr class="my-12">
 
-      // FAQ Accordion
-      document.querySelectorAll(".faq-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const content = btn.nextElementSibling;
-          const icon = btn.querySelector(".icon");
-          content.classList.toggle("hidden");
-          icon.classList.toggle("rotate-180");
+                        <h3 class="text-3xl font-bold mb-6 text-primary-color">
+                            <span class="en">Community Wall</span>
+                            <span class="kh-text hidden">ผนังชุมชน</span>
+                        </h3>
+                        <div id="comments-section">
+                           <!-- Comments will be rendered here -->
+                        </div>
+                        <div id="comment-form-container" class="mt-8">
+                           <!-- Comment form will be rendered here -->
+                        </div>
+                    </div>
+                    <!-- Tools Section -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg border">
+                         <h3 class="text-3xl font-bold mb-6 text-primary-color">
+                           <span class="en">Educational Tools</span>
+                           <span class="kh-text hidden">เครื่องมือการศึกษา</span>
+                        </h3>
+                        <div id="tools-list" class="space-y-6">
+                            <!-- Tools will be rendered here -->
+                        </div>
+                        <div id="tools-auth-message" class="hidden mt-6 text-center p-4 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-md">
+                           <span class="en">Please log in with GitHub to download tools.</span>
+                           <span class="kh-text hidden">กรุณาเข้าสู่ระบบด้วย GitHub เพื่อดาวน์โหลดเครื่องมือ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link, [data-page]');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // --- Page Navigation ---
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.add('hidden');
+            });
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+            }
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.page === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            window.scrollTo(0, 0);
+            mobileMenu.classList.add('hidden');
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = e.currentTarget.dataset.page;
+                showPage(pageId);
+            });
         });
-      });
 
-      // Fetch Minecraft Server Status
-      const ip = "cubesabay.apsara.lol";
-      fetch(`https://api.mcsrvstat.us/2/${ip}`)
-        .then(res => res.json())
-        .then(data => {
-          const statusEl = document.getElementById("status");
-          const playersEl = document.getElementById("players");
-          const motdEl = document.getElementById("motd");
-          if (data.online) {
-            statusEl.innerHTML = `<span class="text-green-500"><i class="fas fa-server"></i> Online</span>`;
-            playersEl.innerHTML = `<i class="fas fa-users"></i> អ្នកលេង Online: <strong>${data.players.online} / ${data.players.max}</strong>`;
-            motdEl.innerText = data.motd?.clean?.join(" ") || "សូមស្វាគមន៍មកកាន់ Server របស់យើង!";
-          } else {
-            statusEl.innerHTML = `<span class="text-red-500"><i class="fas fa-server"></i> Offline</span>`;
-            playersEl.innerText = "Server កំពុងបិទปรับปรุง។";
-          }
-        })
-        .catch(() => {
-          document.getElementById("status").innerHTML = `<span class="text-yellow-500"><i class="fas fa-exclamation-triangle"></i> មិនអាចទាញទិន្នន័យបានទេ</span>`;
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
 
-      // ប៊ូតុង Copy IP
-      const copyBtn = document.getElementById('copy-ip-btn');
-      const serverIp = document.getElementById('server-ip').innerText;
-      copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(serverIp).then(() => {
-          const copyText = document.getElementById('copy-text');
-          copyText.innerText = 'Copied!';
-          copyBtn.classList.remove('bg-indigo-500'); copyBtn.classList.add('bg-green-500');
-          setTimeout(() => {
-            copyText.innerText = 'Copy';
-            copyBtn.classList.remove('bg-green-500'); copyBtn.classList.add('bg-indigo-500');
-          }, 2000);
+        // --- Header scroll effect ---
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
         });
-      });
+        
+        // --- Feather Icons ---
+        feather.replace();
 
-      // Animation on Scroll
-      const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                  entry.target.classList.add('fade-in');
-                  entry.target.classList.remove('section-hidden');
-                  observer.unobserve(entry.target);
-              }
-          });
-      }, { threshold: 0.1 });
-      document.querySelectorAll('section').forEach(section => {
-          section.classList.add('section-hidden');
-          observer.observe(section);
-      });
+        // --- Typing Animation ---
+        const typedTextSpan = document.getElementById('typed-text');
+        const typedTextKmSpan = document.getElementById('typed-text-km');
+        const textArray = ["Student", "Learner", "Dreamer", "Developer"];
+        const textArrayKm = ["សិស្ស", "អ្នកសិក្សា", "អ្នកស្រមៃ", "អ្នកអភិវឌ្ឍន៍"];
+        let textArrayIndex = 0;
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < textArray[textArrayIndex].length) {
+                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+                typedTextKmSpan.textContent += textArrayKm[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 150);
+            } else {
+                setTimeout(erase, 2000);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+                typedTextKmSpan.textContent = textArrayKm[textArrayIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, 100);
+            } else {
+                textArrayIndex++;
+                if (textArrayIndex >= textArray.length) textArrayIndex = 0;
+                setTimeout(type, 500);
+            }
+        }
+        type();
+        
+        // --- Language Switcher ---
+        const langLinks = document.querySelectorAll('[data-lang]');
+        const currentLangSpan = document.getElementById('current-lang');
+        const translatableElements = document.querySelectorAll('.en, .kh-text, .kh-title, .km');
+
+        function setLanguage(lang) {
+            currentLangSpan.textContent = lang.toUpperCase();
+            translatableElements.forEach(el => {
+                if (el.classList.contains(lang) || (lang === 'km' && (el.classList.contains('kh-text') || el.classList.contains('kh-title')))) {
+                    el.classList.remove('hidden');
+                } else if(el.classList.contains('en') || el.classList.contains('kh-text') || el.classList.contains('kh-title') || el.classList.contains('km')) {
+                    el.classList.add('hidden');
+                }
+            });
+        }
+
+        langLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                setLanguage(e.target.dataset.lang);
+            });
+        });
+        setLanguage('en'); // Default language
+
+        // --- Firebase Logic ---
+        const { auth, db, GithubAuthProvider, signInWithPopup, signOut, onAuthStateChanged, collection, addDoc, query, onSnapshot, serverTimestamp } = window.firebase;
+        const authContainer = document.getElementById('auth-container');
+        const commentFormContainer = document.getElementById('comment-form-container');
+        const commentsSection = document.getElementById('comments-section');
+        const toolsList = document.getElementById('tools-list');
+        const toolsAuthMessage = document.getElementById('tools-auth-message');
+        
+        let currentUser = null;
+
+        const toolsData = [
+            { id: 1, name: 'Obsidian', description: 'A powerful knowledge base that works on top of a local folder of plain text Markdown files.', img: 'https://placehold.co/100x100/333/fff?text=OBS', link: '#', protected: true },
+            { id: 2, name: 'Anki', description: 'A program which makes remembering things easy. Because it\'s a lot more efficient than traditional study methods.', img: 'https://placehold.co/100x100/333/fff?text=ANKI', link: '#', protected: true },
+            { id: 3, name: 'VS Code', description: 'A source-code editor made by Microsoft for Windows, Linux and macOS. Features include support for debugging, syntax highlighting, etc.', img: 'https://placehold.co/100x100/333/fff?text=VSC', link: '#', protected: false },
+        ];
+        
+        // --- NEW: Auth Error Handling ---
+        function showAuthErrorModal(message) {
+            // Remove existing modal first
+            const existingModal = document.getElementById('auth-error-modal');
+            if (existingModal) existingModal.remove();
+
+            const modal = document.createElement('div');
+            modal.id = 'auth-error-modal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-md w-full text-center">
+                    <h3 class="text-2xl font-bold text-red-600 mb-4">Configuration Required</h3>
+                    <p class="text-gray-700 mb-6">
+                        ${message}
+                    </p>
+                    <button id="close-auth-error-modal" class="bg-primary-color text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-90 transition-colors">
+                        I Understand
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.getElementById('close-auth-error-modal').addEventListener('click', () => {
+                modal.remove();
+            });
+        }
+        
+        // --- NEW: Centralized Sign-In Handler ---
+        function handleSignIn() {
+            const provider = new GithubAuthProvider();
+            signInWithPopup(auth, provider).catch(error => {
+                console.error("Login failed:", error.code, error.message);
+                if (error.code === 'auth/unauthorized-domain') {
+                    const friendlyMessage = "This website's domain has not been authorized for login. To fix this, please go to your Firebase Console -> Authentication -> Settings -> Authorized domains, and add the current domain.";
+                    showAuthErrorModal(friendlyMessage);
+                }
+            });
+        }
+        
+        function renderAuthUI(user) {
+            if (user) {
+                authContainer.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <img src="${user.photoURL}" alt="${user.displayName}" class="w-8 h-8 rounded-full">
+                        <button id="logout-btn" class="bg-red-500 text-white px-3 py-1 rounded-md text-sm">Logout</button>
+                    </div>
+                `;
+                document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+            } else {
+                authContainer.innerHTML = `
+                    <button id="login-btn" class="bg-gray-800 text-white px-4 py-2 rounded-md flex items-center space-x-2 hover:bg-gray-700">
+                        <i data-feather="github" class="w-5 h-5"></i>
+                        <span>Login</span>
+                    </button>
+                `;
+                document.getElementById('login-btn').addEventListener('click', handleSignIn);
+                feather.replace();
+            }
+        }
+        
+        function renderCommentForm(user) {
+            if (user) {
+                commentFormContainer.innerHTML = `
+                    <form id="comment-form">
+                         <div class="flex items-start space-x-3">
+                            <img src="${user.photoURL}" class="w-10 h-10 rounded-full" alt="Your avatar">
+                            <div class="flex-1">
+                                <textarea id="comment-text" class="w-full p-2 border rounded-md" rows="3" placeholder="Join the conversation..." required></textarea>
+                                <button type="submit" class="mt-2 bg-primary-color text-white px-4 py-2 rounded-md">Post Comment</button>
+                            </div>
+                        </div>
+                    </form>
+                `;
+                 document.getElementById('comment-form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const commentText = document.getElementById('comment-text').value;
+                    if (commentText.trim() === '') return;
+
+                    await addDoc(collection(db, "comments"), {
+                        text: commentText,
+                        author: user.displayName,
+                        avatar: user.photoURL,
+                        uid: user.uid,
+                        timestamp: serverTimestamp()
+                    });
+                    
+                    document.getElementById('comment-text').value = '';
+                });
+            } else {
+                 commentFormContainer.innerHTML = `<p class="text-center p-4 bg-gray-100 rounded-md">Please <button id="login-to-comment" class="text-primary-color font-bold underline">log in with GitHub</button> to post a comment.</p>`;
+                 document.getElementById('login-to-comment').addEventListener('click', handleSignIn);
+            }
+        }
+        
+        function renderComments() {
+             const q = query(collection(db, "comments"));
+             onSnapshot(q, (querySnapshot) => {
+                let commentsHtml = '';
+                querySnapshot.forEach((doc) => {
+                    const comment = doc.data();
+                    const date = comment.timestamp ? comment.timestamp.toDate().toLocaleString() : 'Just now';
+                    commentsHtml += `
+                        <div class="flex items-start space-x-3 mb-4 p-4 bg-gray-50 rounded-lg">
+                            <img src="${comment.avatar}" class="w-10 h-10 rounded-full" alt="${comment.author}">
+                            <div class="flex-1">
+                                <p class="font-bold">${comment.author} <span class="text-sm font-normal text-gray-500 ml-2">${date}</span></p>
+                                <p class="text-gray-700">${comment.text}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                commentsSection.innerHTML = commentsHtml || '<p class="text-center text-gray-500">No comments yet. Be the first!</p>';
+             });
+        }
+        
+        function renderTools(user) {
+            toolsList.innerHTML = toolsData.map(tool => `
+                <div class="flex items-center space-x-4">
+                    <img src="${tool.img}" alt="${tool.name}" class="w-16 h-16 rounded-md">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-lg">${tool.name}</h4>
+                        <p class="text-sm text-gray-600">${tool.description}</p>
+                    </div>
+                    ${tool.protected && !user 
+                        ? `<button class="download-btn-locked bg-gray-300 text-gray-600 px-4 py-2 rounded-md cursor-not-allowed flex items-center"><i data-feather="lock" class="w-4 h-4 mr-2"></i>Download</button>`
+                        : `<a href="${tool.link}" download class="download-btn bg-secondary-color text-white px-4 py-2 rounded-md hover:bg-opacity-90 flex items-center"><i data-feather="download" class="w-4 h-4 mr-2"></i>Download</a>`
+                    }
+                </div>
+            `).join('');
+            
+            if (!user) {
+                toolsAuthMessage.classList.remove('hidden');
+                document.querySelectorAll('.download-btn-locked').forEach(btn => {
+                    btn.addEventListener('click', handleSignIn);
+                });
+            } else {
+                 toolsAuthMessage.classList.add('hidden');
+            }
+
+            feather.replace();
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            renderAuthUI(user);
+            renderCommentForm(user);
+            renderTools(user);
+        });
+        
+        renderComments(); // Initial render
+        
     });
-  </script>
+    </script>
 </body>
 </html>
+
