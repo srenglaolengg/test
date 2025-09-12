@@ -14,14 +14,14 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
         import { getAuth, GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, onSnapshot, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBA6KNByP2nrhf5yL7NYO7VvrIzH8lI6rc",
             authDomain: "website-4ccaa.firebaseapp.com",
             projectId: "website-4ccaa",
-            storageBucket: "website-4ccaa.appspot.com",
+            storageBucket: "website-4ccaa.firebasestorage.app",
             messagingSenderId: "859215513748",
             appId: "1:859215513748:web:305355f640d60151878c81",
             measurementId: "G-GY4TSFN3KE"
@@ -33,7 +33,20 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        window.firebase = { auth, db, GithubAuthProvider, signInWithPopup, signOut, onAuthStateChanged, collection, addDoc, query, onSnapshot, serverTimestamp };
+        // Make firebase services globally available
+        window.firebase = { 
+            auth, 
+            db, 
+            GithubAuthProvider, 
+            signInWithPopup, 
+            signOut, 
+            onAuthStateChanged, 
+            collection, 
+            addDoc, 
+            query, 
+            onSnapshot, 
+            serverTimestamp 
+        };
     </script>
     <style>
         :root {
@@ -114,7 +127,17 @@
     </style>
 </head>
 <body class="antialiased leading-relaxed">
-
+    <!-- Error Modal -->
+    <div id="auth-error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-4 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-md w-full text-center">
+            <h3 class="text-2xl font-bold text-red-600 mb-4">Configuration Required</h3>
+            <p id="auth-error-message" class="text-gray-700 mb-6"></p>
+            <button id="close-auth-error-modal" class="bg-primary-color text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-90 transition-colors">
+                I Understand
+            </button>
+        </div>
+    </div>
+    
     <!-- Header & Navigation -->
     <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glassmorphism" id="header">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -256,7 +279,7 @@
                             My real education happens when the bell rings. I am a firm believer in self-learning. I spend hours diving into online courses, devouring articles on technology and philosophy, and practicing coding. For me, the internet is the world's largest library, and I am its most eager patron. Practical experience is my textbook; building a small web application or writing a script to automate a task teaches me more than any lecture. It's in the struggle of debugging code at 2 AM that I find my deepest understanding.
                         </p>
                          <p class="text-lg kh-text hidden">
-                           ការអប់រំពិតប្រាកដរបស់ខ្ញុំកើតឡើងនៅពេលដែលជួងរោទ៍។ ខ្ញុំជាអ្នកជឿជាក់លើការរៀនដោយខ្លួនឯង។ ខ្ញុំចំណាយពេលជាច្រើនម៉ោងក្នុងការសិក្សាវគ្គសិក្សាអនឡាញ អានអត្ថបទអំពីបច្ចេកវិទ្យានិងទស្សនវិជ្ជា និងអនុវត្តការសរសេរកូដ។ សម្រាប់ខ្ញុំ អ៊ីនធឺណិតគឺជាបណ្ណាល័យដ៏ធំបំផុតរបស់ពិភពលោក ហើយខ្ញុំជាអ្នកគាំទ្រដ៏กระตือรือร้นបំផុតរបស់វា។ បទពិសោធន៍ជាក់ស្តែងគឺជាសៀវភៅសិក្សារបស់ខ្ញុំ ការបង្កើតកម្មវិធីបណ្ដាញតូចមួយឬការសរសេរស្គ្រីបដើម្បីធ្វើស្វ័យប្រវត្តិកម្មកិច្ចការមួយបង្រៀនខ្ញុំច្រើនជាងការบรรยายណាមួយ។ វាគឺនៅក្នុងការតស៊ូនៃការកែកំហុសកូដនៅម៉ោង 2 ទៀបភ្លឺដែលខ្ញុំរកឃើញការយល់ដឹងដ៏ជ្រាលជ្រៅបំផុតរបស់ខ្ញុំ។
+                           ការអប់រំពិតប្រាកដរបស់ខ្ញុំកើតឡើងនៅពេលដែលជួងរោទ៍។ ខ្ញុំជាអ្នកជឿជាក់លើការរៀនដោយខ្លួនឯង។ ខ្ញុំចំណាយពេលជាច្រើនម៉ោងក្នុងការសិក្សាវគ្គសិក្សាអនឡាញ អានអត្ថបទអំពីបច្ចេកវិទ្យានិងទស្សនវិជ្ជា និងអនុវត្តការសរសេរកូដ។ សម្រាប់ខ្ញុំ អ៊ីនធឺណិតគឺជាបណ្ណាល័យដ៏ធំបំផុតរបស់ពិភពលោក ហើយខ្ញុំជាអ្នកគាំទ្រដ៏กระตือรือរ้นបំផុតរបស់វា។ បទពិសោធន៍ជាក់ស្តែងគឺជាសៀវភៅសិក្សារបស់ខ្ញុំ ការបង្កើតកម្មវិធីបណ្ដាញតូចមួយឬការសរសេរស្គ្រីបដើម្បីធ្វើស្វ័យប្រវត្តិកម្មកិច្ចការមួយបង្រៀនខ្ញុំច្រើនជាងការบรรยายណាមួយ។ វាគឺនៅក្នុងការតស៊ូនៃការកែកំហុសកូដនៅម៉ោង 2 ទៀបភ្លឺដែលខ្ញុំរកឃើញការយល់ដឹងដ៏ជ្រាលជ្រៅបំផុតរបស់ខ្ញុំ។
                         </p>
                     </div>
                 </div>
@@ -391,15 +414,17 @@
                            <span class="en">Leave a Message</span>
                            <span class="kh-text hidden">ฝากข้อความ</span>
                         </h3>
-                        <form id="contact-form" class="space-y-4 mb-12">
-                            <input type="text" placeholder="Your Name" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none">
-                            <input type="email" placeholder="Your Email" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none">
-                            <textarea rows="5" placeholder="Your Message" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none"></textarea>
-                            <button type="submit" class="bg-primary-color text-white font-bold py-3 px-6 rounded-md hover:bg-opacity-90 transition-colors">
-                                <span class="en">Send</span>
-                                <span class="kh-text hidden">ส่ง</span>
-                            </button>
-                        </form>
+                        <div id="contact-form-container" class="mb-12">
+                            <form id="contact-form" class="space-y-4">
+                                <input name="name" type="text" placeholder="Your Name" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none" required>
+                                <input name="email" type="email" placeholder="Your Email" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none" required>
+                                <textarea name="message" rows="5" placeholder="Your Message" class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary-color focus:outline-none" required></textarea>
+                                <button type="submit" class="bg-primary-color text-white font-bold py-3 px-6 rounded-md hover:bg-opacity-90 transition-colors">
+                                    <span class="en">Send</span>
+                                    <span class="kh-text hidden">ส่ง</span>
+                                </button>
+                            </form>
+                        </div>
 
                         <hr class="my-12">
 
@@ -516,7 +541,9 @@
                 setTimeout(type, 500);
             }
         }
-        type();
+        if (typedTextSpan && typedTextKmSpan) {
+            type();
+        }
         
         // --- Language Switcher ---
         const langLinks = document.querySelectorAll('[data-lang]');
@@ -526,12 +553,19 @@
         function setLanguage(lang) {
             currentLangSpan.textContent = lang.toUpperCase();
             translatableElements.forEach(el => {
-                if (el.classList.contains(lang) || (lang === 'km' && (el.classList.contains('kh-text') || el.classList.contains('kh-title')))) {
+                const isKhmerElement = el.classList.contains('kh-text') || el.classList.contains('kh-title') || el.classList.contains('km');
+                const isEnglishElement = el.classList.contains('en');
+
+                if (lang === 'km' && isKhmerElement) {
                     el.classList.remove('hidden');
-                } else if(el.classList.contains('en') || el.classList.contains('kh-text') || el.classList.contains('kh-title') || el.classList.contains('km')) {
-                    el.classList.add('hidden');
+                } else if (lang === 'en' && isEnglishElement) {
+                    el.classList.remove('hidden');
+                } else if (isKhmerElement || isEnglishElement) {
+                     el.classList.add('hidden');
                 }
             });
+             // Refresh feather icons in case some were hidden/shown
+            feather.replace();
         }
 
         langLinks.forEach(link => {
@@ -549,8 +583,26 @@
         const commentsSection = document.getElementById('comments-section');
         const toolsList = document.getElementById('tools-list');
         const toolsAuthMessage = document.getElementById('tools-auth-message');
+        const contactFormContainer = document.getElementById('contact-form-container');
+        const contactForm = document.getElementById('contact-form');
         
         let currentUser = null;
+
+        // --- Contact Form Handler ---
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const name = formData.get('name');
+            contactFormContainer.innerHTML = `
+                <div class="p-4 bg-green-100 border border-green-300 text-green-800 rounded-md">
+                    <p><strong class="en">Thank you, ${name}!</strong><strong class="kh-text hidden">សូមអរគុណ ${name}!</strong></p>
+                    <p><span class="en">Your message has been sent.</span><span class="kh-text hidden">សាររបស់អ្នកត្រូវបានផ្ញើ។</span></p>
+                </div>
+            `;
+            // Update language visibility for the new content
+            const lang = document.getElementById('current-lang').textContent.toLowerCase();
+            setLanguage(lang);
+        });
 
         const toolsData = [
             { id: 1, name: 'Obsidian', description: 'A powerful knowledge base that works on top of a local folder of plain text Markdown files.', img: 'https://placehold.co/100x100/333/fff?text=OBS', link: '#', protected: true },
@@ -558,40 +610,30 @@
             { id: 3, name: 'VS Code', description: 'A source-code editor made by Microsoft for Windows, Linux and macOS. Features include support for debugging, syntax highlighting, etc.', img: 'https://placehold.co/100x100/333/fff?text=VSC', link: '#', protected: false },
         ];
         
-        // --- NEW: Auth Error Handling ---
-        function showAuthErrorModal(message) {
-            // Remove existing modal first
-            const existingModal = document.getElementById('auth-error-modal');
-            if (existingModal) existingModal.remove();
+        // --- Auth Error Handling ---
+        const authErrorModal = document.getElementById('auth-error-modal');
+        const authErrorMessage = document.getElementById('auth-error-message');
+        const closeAuthErrorModalBtn = document.getElementById('close-auth-error-modal');
 
-            const modal = document.createElement('div');
-            modal.id = 'auth-error-modal';
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
-            modal.innerHTML = `
-                <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-md w-full text-center">
-                    <h3 class="text-2xl font-bold text-red-600 mb-4">Configuration Required</h3>
-                    <p class="text-gray-700 mb-6">
-                        ${message}
-                    </p>
-                    <button id="close-auth-error-modal" class="bg-primary-color text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-90 transition-colors">
-                        I Understand
-                    </button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            document.getElementById('close-auth-error-modal').addEventListener('click', () => {
-                modal.remove();
-            });
+        function showAuthErrorModal(message) {
+            authErrorMessage.textContent = message;
+            authErrorModal.classList.remove('hidden');
         }
+
+        closeAuthErrorModalBtn.addEventListener('click', () => {
+             authErrorModal.classList.add('hidden');
+        });
         
-        // --- NEW: Centralized Sign-In Handler ---
+        // --- Centralized Sign-In Handler ---
         function handleSignIn() {
             const provider = new GithubAuthProvider();
             signInWithPopup(auth, provider).catch(error => {
                 console.error("Login failed:", error.code, error.message);
                 if (error.code === 'auth/unauthorized-domain') {
-                    const friendlyMessage = "This website's domain has not been authorized for login. To fix this, please go to your Firebase Console -> Authentication -> Settings -> Authorized domains, and add the current domain.";
+                    const friendlyMessage = "This website's domain has not been authorized for login. To fix this, go to your Firebase Console -> Authentication -> Settings -> Authorized domains, and add the current domain. This is a security measure, not an error in the code.";
                     showAuthErrorModal(friendlyMessage);
+                } else {
+                     showAuthErrorModal(`An unexpected error occurred: ${error.message}`);
                 }
             });
         }
@@ -635,15 +677,19 @@
                     const commentText = document.getElementById('comment-text').value;
                     if (commentText.trim() === '') return;
 
-                    await addDoc(collection(db, "comments"), {
-                        text: commentText,
-                        author: user.displayName,
-                        avatar: user.photoURL,
-                        uid: user.uid,
-                        timestamp: serverTimestamp()
-                    });
-                    
-                    document.getElementById('comment-text').value = '';
+                    try {
+                        await addDoc(collection(db, "comments"), {
+                            text: commentText,
+                            author: user.displayName,
+                            avatar: user.photoURL,
+                            uid: user.uid,
+                            timestamp: serverTimestamp()
+                        });
+                        document.getElementById('comment-text').value = '';
+                    } catch (error) {
+                        console.error("Error adding comment: ", error);
+                        alert("There was an error posting your comment. Please check the console for details.");
+                    }
                 });
             } else {
                  commentFormContainer.innerHTML = `<p class="text-center p-4 bg-gray-100 rounded-md">Please <button id="login-to-comment" class="text-primary-color font-bold underline">log in with GitHub</button> to post a comment.</p>`;
@@ -652,23 +698,46 @@
         }
         
         function renderComments() {
+             commentsSection.innerHTML = `<p class="text-center text-gray-500">Loading comments...</p>`;
+             // FIX: Removed orderBy from the query to prevent index-related errors.
              const q = query(collection(db, "comments"));
              onSnapshot(q, (querySnapshot) => {
-                let commentsHtml = '';
+                let comments = [];
                 querySnapshot.forEach((doc) => {
-                    const comment = doc.data();
-                    const date = comment.timestamp ? comment.timestamp.toDate().toLocaleString() : 'Just now';
-                    commentsHtml += `
-                        <div class="flex items-start space-x-3 mb-4 p-4 bg-gray-50 rounded-lg">
-                            <img src="${comment.avatar}" class="w-10 h-10 rounded-full" alt="${comment.author}">
-                            <div class="flex-1">
-                                <p class="font-bold">${comment.author} <span class="text-sm font-normal text-gray-500 ml-2">${date}</span></p>
-                                <p class="text-gray-700">${comment.text}</p>
-                            </div>
-                        </div>
-                    `;
+                    comments.push(doc.data());
                 });
-                commentsSection.innerHTML = commentsHtml || '<p class="text-center text-gray-500">No comments yet. Be the first!</p>';
+
+                // Sort the comments in memory (client-side) to ensure newest are first.
+                comments.sort((a, b) => {
+                    const dateA = a.timestamp ? a.timestamp.toDate().getTime() : 0;
+                    const dateB = b.timestamp ? b.timestamp.toDate().getTime() : 0;
+                    return dateB - dateA;
+                });
+                
+                let commentsHtml = '';
+                if (comments.length === 0) {
+                     commentsHtml = '<p class="text-center text-gray-500">No comments yet. Be the first!</p>';
+                } else {
+                    comments.forEach((comment) => {
+                        const date = comment.timestamp ? comment.timestamp.toDate().toLocaleString() : 'Just now';
+                        // Sanitize text content to prevent potential XSS
+                        const sanitizedText = document.createElement('p');
+                        sanitizedText.textContent = comment.text;
+                        commentsHtml += `
+                            <div class="flex items-start space-x-3 mb-4 p-4 bg-gray-50 rounded-lg">
+                                <img src="${comment.avatar}" class="w-10 h-10 rounded-full" alt="${comment.author}">
+                                <div class="flex-1">
+                                    <p class="font-bold">${comment.author} <span class="text-sm font-normal text-gray-500 ml-2">${date}</span></p>
+                                    <p class="text-gray-700 whitespace-pre-wrap break-words">${sanitizedText.innerHTML}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                commentsSection.innerHTML = commentsHtml;
+             }, (error) => {
+                console.error("Error fetching comments: ", error);
+                commentsSection.innerHTML = `<p class="text-center text-red-500">Could not load comments. If you are the developer, please check the console for Firestore index errors.</p>`;
              });
         }
         
