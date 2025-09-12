@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,6 +60,10 @@
             --accent-color: #e5e5e5;
         }
 
+        html {
+             scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -112,6 +116,21 @@
         .lang-switcher:hover .lang-menu {
             display: block;
         }
+        
+        /* New Mobile Menu Overlay Styles */
+        .mobile-menu-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .mobile-menu-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .mobile-menu-content {
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu-overlay.hidden .mobile-menu-content {
+             transform: translateY(-20px);
+        }
 
         /* Typing animation */
         .typed-cursor {
@@ -153,7 +172,7 @@
             <div class="flex items-center space-x-4">
                  <!-- Language Switcher -->
                 <div class="relative lang-switcher">
-                    <button class="flex items-center space-x-1 focus:outline-none">
+                    <button class="flex items-center space-x-1 focus:outline-none p-2">
                         <i data-feather="globe" class="w-5 h-5"></i>
                         <span id="current-lang">EN</span>
                         <i data-feather="chevron-down" class="w-4 h-4"></i>
@@ -166,28 +185,35 @@
                 <!-- Auth Button -->
                 <div id="auth-container"></div>
                  <!-- Mobile Menu Button -->
-                <button class="md:hidden" id="mobile-menu-button">
+                <button class="md:hidden p-2" id="mobile-menu-button">
                     <i data-feather="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </nav>
-        <!-- Mobile Menu -->
-        <div class="hidden md:hidden" id="mobile-menu">
-            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="home">Home</a>
-            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="about">About</a>
-            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="education">Education</a>
-            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="reflection">Reflection</a>
-            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="projects">Projects</a>
-            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-200" data-page="contact">Contact & Tools</a>
-        </div>
     </header>
+
+    <!-- New Fullscreen Mobile Menu -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 bg-bg-color z-[60] hidden">
+        <div class="mobile-menu-content flex flex-col items-center justify-center h-full space-y-8 text-2xl font-bold">
+            <button class="absolute top-6 right-6 p-2" id="mobile-menu-close-button">
+                 <i data-feather="x" class="w-8 h-8"></i>
+            </button>
+            <a href="#" class="nav-link-mobile" data-page="home">Home</a>
+            <a href="#" class="nav-link-mobile" data-page="about">About</a>
+            <a href="#" class="nav-link-mobile" data-page="education">Education</a>
+            <a href="#" class="nav-link-mobile" data-page="reflection">Reflection</a>
+            <a href="#" class="nav-link-mobile" data-page="projects">Projects</a>
+            <a href="#" class="nav-link-mobile" data-page="contact">Contact & Tools</a>
+        </div>
+    </div>
+
 
     <!-- Main Content -->
     <main>
         <!-- Page: Home -->
         <section id="home" class="page min-h-screen flex items-center justify-center hero-bg">
             <div class="absolute inset-0 bg-black bg-opacity-30"></div>
-            <div class="text-center text-white z-10 p-4">
+            <div class="text-center text-white z-10 p-6">
                 <h1 class="text-4xl md:text-6xl font-bold mb-4">
                     <span class="en">Welcome to My Journey</span>
                     <span class="kh-text hidden">សូមស្វាគមន៍មកកាន់ដំណើររបស់ខ្ញុំ</span>
@@ -207,7 +233,7 @@
         <section id="about" class="page hidden py-20 md:py-32 bg-white">
             <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto">
-                    <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+                    <h2 class="text-3xl md:text-5xl font-bold text-center mb-12">
                         <span class="en">My Story</span>
                         <span class="kh-title hidden">រឿងរ៉ាវរបស់ខ្ញុំ</span>
                     </h2>
@@ -249,12 +275,12 @@
         <!-- Page: Education -->
         <section id="education" class="page hidden py-20 md:py-32">
             <div class="container mx-auto px-6">
-                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+                 <h2 class="text-3xl md:text-5xl font-bold text-center mb-12">
                     <span class="en">My Learning Path</span>
                     <span class="kh-title hidden">เส้นทางการเรียนรู้ของฉัน</span>
                 </h2>
-                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-4">
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="space-y-4 text-center md:text-left">
                         <h3 class="text-3xl font-bold text-primary-color">
                             <span class="en">Koh Prak High School</span>
                             <span class="kh-text hidden">វិទ្យាល័យកោះប្រាក់</span>
@@ -289,11 +315,11 @@
         <!-- Page: Reflection -->
         <section id="reflection" class="page hidden py-20 md:py-32 bg-white">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-16">
                      <span class="en">Seeds of Thought</span>
                      <span class="kh-title hidden">គ្រាប់ពូជនៃការគិត</span>
                 </h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Reflection Card 1 -->
                     <div class="bg-gray-50 p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
                         <p class="text-xl italic mb-4 en">"Identity is not found, but forged. It is the vessel we build, plank by plank, from the wreckage of our storms and the timber of our dreams."</p>
@@ -319,11 +345,11 @@
         <!-- Page: Projects -->
         <section id="projects" class="page hidden py-20 md:py-32">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-center mb-16">
                      <span class="en">My Projects</span>
                      <span class="kh-title hidden">គម្រោងរបស់ខ្ញុំ</span>
                 </h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Project Card 1 -->
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
                         <img src="https://placehold.co/600x400/d4a373/f8f7f2?text=Portfolio+v1" alt="Project 1" class="w-full h-48 object-cover">
@@ -403,11 +429,11 @@
         <!-- Page: Contact & Tools -->
         <section id="contact" class="page hidden py-20 md:py-32">
             <div class="container mx-auto px-6">
-                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+                 <h2 class="text-3xl md:text-5xl font-bold text-center mb-12">
                      <span class="en">Connect & Collaborate</span>
                      <span class="kh-title hidden">เชื่อมต่อและร่วมมือ</span>
                 </h2>
-                <div class="grid lg:grid-cols-2 gap-16">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
                     <!-- Contact & Comments -->
                     <div>
                         <h3 class="text-3xl font-bold mb-6 text-primary-color">
@@ -440,7 +466,7 @@
                         </div>
                     </div>
                     <!-- Tools Section -->
-                    <div class="bg-white p-8 rounded-lg shadow-lg border">
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg border">
                          <h3 class="text-3xl font-bold mb-6 text-primary-color">
                            <span class="en">Educational Tools</span>
                            <span class="kh-text hidden">เครื่องมือการศึกษา</span>
@@ -461,9 +487,11 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const pages = document.querySelectorAll('.page');
-        const navLinks = document.querySelectorAll('.nav-link, [data-page]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileNavLinks = document.querySelectorAll('.nav-link-mobile, [data-page]');
         const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuCloseButton = document.getElementById('mobile-menu-close-button');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
 
         // --- Page Navigation ---
         function showPage(pageId) {
@@ -482,19 +510,24 @@
                 }
             });
             window.scrollTo(0, 0);
-            mobileMenu.classList.add('hidden');
+            mobileMenuOverlay.classList.add('hidden');
         }
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
+        // Combined navigation for both desktop and mobile
+        document.querySelectorAll('[data-page]').forEach(link => {
+             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const pageId = e.currentTarget.dataset.page;
                 showPage(pageId);
             });
         });
-
+        
+        // --- Mobile Menu ---
         mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            mobileMenuOverlay.classList.remove('hidden');
+        });
+        mobileMenuCloseButton.addEventListener('click', () => {
+             mobileMenuOverlay.classList.add('hidden');
         });
 
         // --- Header scroll effect ---
@@ -519,6 +552,7 @@
         let charIndex = 0;
 
         function type() {
+            if(!typedTextSpan || !typedTextKmSpan) return;
             if (charIndex < textArray[textArrayIndex].length) {
                 typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
                 typedTextKmSpan.textContent += textArrayKm[textArrayIndex].charAt(charIndex);
@@ -530,6 +564,7 @@
         }
 
         function erase() {
+            if(!typedTextSpan || !typedTextKmSpan) return;
             if (charIndex > 0) {
                 typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
                 typedTextKmSpan.textContent = textArrayKm[textArrayIndex].substring(0, charIndex - 1);
@@ -541,9 +576,7 @@
                 setTimeout(type, 500);
             }
         }
-        if (typedTextSpan && typedTextKmSpan) {
-            type();
-        }
+        type();
         
         // --- Language Switcher ---
         const langLinks = document.querySelectorAll('[data-lang]');
@@ -564,7 +597,6 @@
                      el.classList.add('hidden');
                 }
             });
-             // Refresh feather icons in case some were hidden/shown
             feather.replace();
         }
 
@@ -572,9 +604,12 @@
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 setLanguage(e.target.dataset.lang);
+                // Close dropdown after selection
+                e.currentTarget.closest('.lang-menu').classList.add('hidden');
+                setTimeout(() => e.currentTarget.closest('.lang-menu').classList.remove('hidden'), 0);
             });
         });
-        setLanguage('en'); // Default language
+        setLanguage('en');
 
         // --- Firebase Logic ---
         const { auth, db, GithubAuthProvider, signInWithPopup, signOut, onAuthStateChanged, collection, addDoc, query, onSnapshot, serverTimestamp } = window.firebase;
@@ -588,7 +623,6 @@
         
         let currentUser = null;
 
-        // --- Contact Form Handler ---
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
@@ -599,7 +633,6 @@
                     <p><span class="en">Your message has been sent.</span><span class="kh-text hidden">សាររបស់អ្នកត្រូវបានផ្ញើ។</span></p>
                 </div>
             `;
-            // Update language visibility for the new content
             const lang = document.getElementById('current-lang').textContent.toLowerCase();
             setLanguage(lang);
         });
@@ -610,7 +643,6 @@
             { id: 3, name: 'VS Code', description: 'A source-code editor made by Microsoft for Windows, Linux and macOS. Features include support for debugging, syntax highlighting, etc.', img: 'https://placehold.co/100x100/333/fff?text=VSC', link: '#', protected: false },
         ];
         
-        // --- Auth Error Handling ---
         const authErrorModal = document.getElementById('auth-error-modal');
         const authErrorMessage = document.getElementById('auth-error-message');
         const closeAuthErrorModalBtn = document.getElementById('close-auth-error-modal');
@@ -624,7 +656,6 @@
              authErrorModal.classList.add('hidden');
         });
         
-        // --- Centralized Sign-In Handler ---
         function handleSignIn() {
             const provider = new GithubAuthProvider();
             signInWithPopup(auth, provider).catch(error => {
@@ -643,7 +674,7 @@
                 authContainer.innerHTML = `
                     <div class="flex items-center space-x-2">
                         <img src="${user.photoURL}" alt="${user.displayName}" class="w-8 h-8 rounded-full">
-                        <button id="logout-btn" class="bg-red-500 text-white px-3 py-1 rounded-md text-sm">Logout</button>
+                        <button id="logout-btn" class="bg-red-500 text-white px-3 py-1 rounded-md text-sm hidden sm:block">Logout</button>
                     </div>
                 `;
                 document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
@@ -651,7 +682,7 @@
                 authContainer.innerHTML = `
                     <button id="login-btn" class="bg-gray-800 text-white px-4 py-2 rounded-md flex items-center space-x-2 hover:bg-gray-700">
                         <i data-feather="github" class="w-5 h-5"></i>
-                        <span>Login</span>
+                        <span class="hidden sm:inline">Login</span>
                     </button>
                 `;
                 document.getElementById('login-btn').addEventListener('click', handleSignIn);
@@ -699,7 +730,6 @@
         
         function renderComments() {
              commentsSection.innerHTML = `<p class="text-center text-gray-500">Loading comments...</p>`;
-             // FIX: Removed orderBy from the query to prevent index-related errors.
              const q = query(collection(db, "comments"));
              onSnapshot(q, (querySnapshot) => {
                 let comments = [];
@@ -707,7 +737,6 @@
                     comments.push(doc.data());
                 });
 
-                // Sort the comments in memory (client-side) to ensure newest are first.
                 comments.sort((a, b) => {
                     const dateA = a.timestamp ? a.timestamp.toDate().getTime() : 0;
                     const dateB = b.timestamp ? b.timestamp.toDate().getTime() : 0;
@@ -720,7 +749,6 @@
                 } else {
                     comments.forEach((comment) => {
                         const date = comment.timestamp ? comment.timestamp.toDate().toLocaleString() : 'Just now';
-                        // Sanitize text content to prevent potential XSS
                         const sanitizedText = document.createElement('p');
                         sanitizedText.textContent = comment.text;
                         commentsHtml += `
@@ -743,15 +771,15 @@
         
         function renderTools(user) {
             toolsList.innerHTML = toolsData.map(tool => `
-                <div class="flex items-center space-x-4">
-                    <img src="${tool.img}" alt="${tool.name}" class="w-16 h-16 rounded-md">
-                    <div class="flex-1">
+                <div class="flex items-start sm:items-center space-x-4 flex-col sm:flex-row">
+                    <img src="${tool.img}" alt="${tool.name}" class="w-16 h-16 rounded-md mb-3 sm:mb-0">
+                    <div class="flex-1 mb-3 sm:mb-0">
                         <h4 class="font-bold text-lg">${tool.name}</h4>
                         <p class="text-sm text-gray-600">${tool.description}</p>
                     </div>
                     ${tool.protected && !user 
-                        ? `<button class="download-btn-locked bg-gray-300 text-gray-600 px-4 py-2 rounded-md cursor-not-allowed flex items-center"><i data-feather="lock" class="w-4 h-4 mr-2"></i>Download</button>`
-                        : `<a href="${tool.link}" download class="download-btn bg-secondary-color text-white px-4 py-2 rounded-md hover:bg-opacity-90 flex items-center"><i data-feather="download" class="w-4 h-4 mr-2"></i>Download</a>`
+                        ? `<button class="download-btn-locked w-full sm:w-auto bg-gray-300 text-gray-600 px-4 py-2 rounded-md cursor-not-allowed flex items-center justify-center"><i data-feather="lock" class="w-4 h-4 mr-2"></i>Download</button>`
+                        : `<a href="${tool.link}" download class="download-btn w-full sm:w-auto bg-secondary-color text-white px-4 py-2 rounded-md hover:bg-opacity-90 flex items-center justify-center"><i data-feather="download" class="w-4 h-4 mr-2"></i>Download</a>`
                     }
                 </div>
             `).join('');
@@ -775,7 +803,7 @@
             renderTools(user);
         });
         
-        renderComments(); // Initial render
+        renderComments();
         
     });
     </script>
